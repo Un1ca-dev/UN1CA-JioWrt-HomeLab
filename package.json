@@ -13,7 +13,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "deploy": "npx wrangler pages deploy dist --project-name un1ca-jiowrt"
+    "deploy": "npx wrangler pages deploy dist --project-name un1ca-jiowrt --branch production"
   },
   "dependencies": {
     "lucide-react": "^0.460.0",
