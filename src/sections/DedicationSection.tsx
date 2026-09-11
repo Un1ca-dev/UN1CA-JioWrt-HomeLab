@@ -1,5 +1,5 @@
 import React from 'react';
-import { Terminal, Award, Sparkles } from 'lucide-react';
+import { Terminal, Award, Sparkles, Github, ExternalLink } from 'lucide-react';
 
 export const DedicationSection: React.FC = () => {
   const loopSteps = [
@@ -73,6 +73,20 @@ export const DedicationSection: React.FC = () => {
               </React.Fragment>
             ))}
           </div>
+        </div>
+
+        {/* Prominent Working GitHub Repository Link */}
+        <div className="pt-2 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href="https://github.com/Un1ca-dev/UN1CA-JioWrt-HomeLab"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2.5 px-6 py-3 rounded-2xl bg-gradient-to-r from-sky-600 via-teal-600 to-indigo-600 hover:from-sky-500 hover:to-indigo-500 text-white font-mono text-xs sm:text-sm font-bold shadow-xl shadow-sky-950/60 transition-all hover:scale-[1.02] border border-white/10"
+          >
+            <Github className="w-4 h-4" />
+            <span>Explore Source on GitHub: Un1ca-dev/UN1CA-JioWrt-HomeLab</span>
+            <ExternalLink className="w-3.5 h-3.5 opacity-80" />
+          </a>
         </div>
 
         <div className="pt-4 text-xs font-mono text-lab-textDim">

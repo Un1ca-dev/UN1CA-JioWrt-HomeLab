@@ -14,6 +14,7 @@ import {
   User,
   Sparkles,
   Terminal,
+  ExternalLink,
 } from 'lucide-react';
 import { heroMetaStats } from '../data/statsData';
 
@@ -45,9 +46,15 @@ export const HeroSection: React.FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-4xl mx-auto space-y-6">
-          {/* Creator Profile Badge with Real Photo */}
-          <div className="inline-flex items-center gap-3 p-1.5 pr-4 rounded-full glass-panel border border-sky-500/30 hover:border-sky-400/50 transition-all shadow-lg shadow-sky-950/30">
-            <div className="relative w-9 h-9 rounded-full overflow-hidden border border-sky-400 shrink-0">
+          {/* Creator Profile Badge with Real Photo -> Links to GitHub */}
+          <a
+            href="https://github.com/Un1ca-dev/UN1CA-JioWrt-HomeLab"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="View Suman Sheikh's UN1CA JioWrt Home Lab Repository on GitHub"
+            className="inline-flex items-center gap-3 p-1.5 pr-4 rounded-full glass-panel border border-sky-500/30 hover:border-sky-400/60 hover:bg-sky-950/30 transition-all shadow-lg shadow-sky-950/30 group"
+          >
+            <div className="relative w-9 h-9 rounded-full overflow-hidden border border-sky-400 shrink-0 group-hover:scale-105 transition-transform">
               <img
                 src="/profile.png"
                 alt="Suman Sheikh - Creator of UN1CA JioWrt Home Lab"
@@ -57,18 +64,19 @@ export const HeroSection: React.FC = () => {
             </div>
             <div className="text-left font-mono">
               <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-white leading-tight">
+                <span className="text-xs font-bold text-white leading-tight group-hover:text-sky-300 transition-colors">
                   {heroMetaStats.owner}
                 </span>
-                <span className="text-[10px] px-1.5 py-0.2 rounded bg-sky-500/10 text-sky-300 border border-sky-500/20">
-                  Creator
+                <span className="text-[10px] px-1.5 py-0.2 rounded bg-sky-500/10 text-sky-300 border border-sky-500/20 flex items-center gap-1">
+                  <Github className="w-2.5 h-2.5" />
+                  <span>Un1ca-dev</span>
                 </span>
               </div>
               <p className="text-[10px] text-lab-textMuted leading-tight">
-                Home Lab Builder / Linux & Networking Enthusiast
+                Home Lab Builder • Linux & Networking Enthusiast
               </p>
             </div>
-          </div>
+          </a>
 
           {/* Domain Status Pill */}
           <div className="flex items-center justify-center gap-2">
@@ -136,10 +144,11 @@ export const HeroSection: React.FC = () => {
               href="https://github.com/Un1ca-dev/UN1CA-JioWrt-HomeLab"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-lab-surface/80 hover:bg-lab-surfaceElevated border border-lab-borderSubtle text-lab-textMuted hover:text-white font-mono text-xs sm:text-sm transition-all"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-sky-500/40 hover:border-sky-400 text-sky-300 hover:text-white font-mono text-xs sm:text-sm font-semibold transition-all shadow-lg hover:-translate-y-0.5"
             >
-              <Github className="w-4 h-4" />
-              <span>GitHub</span>
+              <Github className="w-4 h-4 text-sky-400" />
+              <span>GitHub Repository</span>
+              <ExternalLink className="w-3.5 h-3.5 opacity-70" />
             </a>
           </div>
         </div>

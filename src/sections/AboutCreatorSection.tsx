@@ -14,6 +14,8 @@ import {
   Cloud,
   FileText,
   ChevronRight,
+  Github,
+  ExternalLink,
 } from 'lucide-react';
 
 export const AboutCreatorSection: React.FC = () => {
@@ -173,6 +175,18 @@ export const AboutCreatorSection: React.FC = () => {
                 <p className="text-[11px] text-lab-textDim font-mono">
                   Project: UN1CA JioWrt Home Lab
                 </p>
+                <div className="pt-2">
+                  <a
+                    href="https://github.com/Un1ca-dev/UN1CA-JioWrt-HomeLab"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 hover:border-sky-400 text-sky-300 hover:text-white font-mono text-xs transition-all shadow-sm group/gh"
+                  >
+                    <Github className="w-3.5 h-3.5 text-sky-400 group-hover/gh:scale-110 transition-transform" />
+                    <span>GitHub @Un1ca-dev</span>
+                    <ExternalLink className="w-3 h-3 opacity-70" />
+                  </a>
+                </div>
               </div>
             </div>
 
