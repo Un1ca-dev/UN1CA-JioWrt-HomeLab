@@ -58,13 +58,13 @@ export const Footer: React.FC = () => {
             <ul className="space-y-1.5">
               <li>
                 <a
-                  href="https://github.com/Un1ca-dev/UN1CA-JioWrt-HomeLab"
+                  href="https://github.com/Un1ca-dev"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-sky-400 transition-colors flex items-center gap-1 group"
                 >
                   <Github className="w-3.5 h-3.5" />
-                  <span>GitHub Repository</span>
+                  <span>GitHub Profile</span>
                   <ArrowUpRight className="w-3 h-3 text-lab-textDim group-hover:text-sky-400" />
                 </a>
               </li>

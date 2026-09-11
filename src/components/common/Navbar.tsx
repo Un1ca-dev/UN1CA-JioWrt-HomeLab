@@ -92,7 +92,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch, onOpenDocsIndex })
           )}
 
           <a
-            href="https://github.com/Un1ca-dev/UN1CA-JioWrt-HomeLab"
+            href="https://github.com/Un1ca-dev"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-lab-surfaceElevated hover:bg-lab-surfaceHover text-lab-text text-xs font-mono font-medium border border-lab-border transition-all hover:border-sky-400/50"
@@ -144,13 +144,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch, onOpenDocsIndex })
 
           <div className="pt-3 border-t border-lab-borderSubtle flex flex-col gap-2">
             <a
-              href="https://github.com/Un1ca-dev/UN1CA-JioWrt-HomeLab"
+              href="https://github.com/Un1ca-dev"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg bg-lab-surfaceElevated text-sm font-mono text-white border border-lab-border"
             >
               <Github className="w-4 h-4 text-sky-400" />
-              <span>View Source on GitHub</span>
+              <span>GitHub</span>
             </a>
           </div>
         </div>

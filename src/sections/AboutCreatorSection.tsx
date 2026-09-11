@@ -177,7 +177,7 @@ export const AboutCreatorSection: React.FC = () => {
                 </p>
                 <div className="pt-2">
                   <a
-                    href="https://github.com/Un1ca-dev/UN1CA-JioWrt-HomeLab"
+                    href="https://github.com/Un1ca-dev"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 hover:border-sky-400 text-sky-300 hover:text-white font-mono text-xs transition-all shadow-sm group/gh"

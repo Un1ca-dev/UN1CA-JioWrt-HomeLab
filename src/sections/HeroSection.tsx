@@ -48,10 +48,10 @@ export const HeroSection: React.FC = () => {
         <div className="text-center max-w-4xl mx-auto space-y-6">
           {/* Creator Profile Badge with Real Photo -> Links to GitHub */}
           <a
-            href="https://github.com/Un1ca-dev/UN1CA-JioWrt-HomeLab"
+            href="https://github.com/Un1ca-dev"
             target="_blank"
             rel="noopener noreferrer"
-            title="View Suman Sheikh's UN1CA JioWrt Home Lab Repository on GitHub"
+            title="View Suman Sheikh's GitHub Profile"
             className="inline-flex items-center gap-3 p-1.5 pr-4 rounded-full glass-panel border border-sky-500/30 hover:border-sky-400/60 hover:bg-sky-950/30 transition-all shadow-lg shadow-sky-950/30 group"
           >
             <div className="relative w-9 h-9 rounded-full overflow-hidden border border-sky-400 shrink-0 group-hover:scale-105 transition-transform">
@@ -141,13 +141,13 @@ export const HeroSection: React.FC = () => {
             </a>
 
             <a
-              href="https://github.com/Un1ca-dev/UN1CA-JioWrt-HomeLab"
+              href="https://github.com/Un1ca-dev"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-slate-900/90 hover:bg-slate-800 border border-sky-500/40 hover:border-sky-400 text-sky-300 hover:text-white font-mono text-xs sm:text-sm font-semibold transition-all shadow-lg hover:-translate-y-0.5"
             >
               <Github className="w-4 h-4 text-sky-400" />
-              <span>GitHub Repository</span>
+              <span>GitHub</span>
               <ExternalLink className="w-3.5 h-3.5 opacity-70" />
             </a>
           </div>
