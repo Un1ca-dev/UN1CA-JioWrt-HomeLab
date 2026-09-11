@@ -1,0 +1,34 @@
+{
+  "name": "un1ca-jiowrt-website",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "author": "Suman Sheikh (Un1ca-dev)",
+  "homepage": "https://un1ca-jiowrt.pages.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Un1ca-dev/UN1CA-JioWrt-HomeLab.git"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "deploy": "npx wrangler pages deploy dist --project-name un1ca-jiowrt"
+  },
+  "dependencies": {
+    "lucide-react": "^0.460.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10",
+    "wrangler": "^4.131.1"
+  }
+}

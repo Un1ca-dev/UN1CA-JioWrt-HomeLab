@@ -1,0 +1,69 @@
+# Dependencies
+node_modules/
+/.pnp
+.pnp.js
+
+# Production build outputs
+dist/
+dist-ssr/
+build/
+*.local
+
+# Cloudflare Pages & Wrangler
+.wrangler/
+.mf/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*.log
+
+# Environment variables & secrets (STRICT)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.cert
+*.pfx
+*.p12
+*.pub
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+*privatekey*
+*private_key*
+*secret*
+*token*
+*credential*
+*wireguard*.conf
+*wg*.conf
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
