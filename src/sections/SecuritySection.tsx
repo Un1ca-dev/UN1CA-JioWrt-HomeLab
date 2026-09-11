@@ -1,53 +1,51 @@
 import React from 'react';
 import {
-  ShieldCheck,
-  Lock,
   AlertTriangle,
-  Key,
-  FileCheck,
-  EyeOff,
   ShieldAlert,
-  Server,
-  Globe,
-  Radio,
 } from 'lucide-react';
 
 export const SecuritySection: React.FC = () => {
   const securityPillars = [
     {
-      title: 'Private Keys Are Never Published',
-      desc: 'Cryptographic private keys (Let\'s Encrypt privkey.pem and WireGuard private keys) are strictly kept on the device and protected with chmod 600. They are never published or shared.',
-      icon: Lock,
+      title: 'Private Keys',
+      rule: 'Never publish',
+      emoji: '🔐',
+      desc: 'Cryptographic private keys (Let\'s Encrypt privkey.pem and WireGuard private keys) are strictly kept on the local host with chmod 600. Never commit or disclose private keys.',
       color: 'text-rose-400 border-rose-500/30 bg-rose-500/10',
     },
     {
-      title: 'Firewall Exposes Only Required Ports',
-      desc: 'Strict default-drop firewall policy. Only TCP 853 (DNS-over-TLS) and TCP 8443 (Management) are routed through the VPS DNAT. All other incoming ports are dropped.',
-      icon: ShieldCheck,
-      color: 'text-sky-400 border-sky-500/30 bg-sky-500/10',
-    },
-    {
-      title: 'HTTPS & TLS Everywhere',
-      desc: 'Plain text unencrypted protocols are prohibited on external boundaries. Port 853 uses TLS 1.3 with full Let\'s Encrypt certificate chain validation, and Web UI uses HTTPS.',
-      icon: FileCheck,
-      color: 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10',
-    },
-    {
-      title: 'DNS Services Not Unnecessarily Exposed',
-      desc: 'Unencrypted standard DNS (port 53) is strictly bound to internal LAN interfaces (192.168.1.1, 127.0.0.1) and is never forwarded to the public internet to prevent amplification attacks.',
-      icon: Globe,
-      color: 'text-purple-400 border-purple-500/30 bg-purple-500/10',
-    },
-    {
-      title: 'Correct VPS Firewall Configuration',
-      desc: 'Oracle Cloud Security Lists and host iptables explicitly enforce conntrack stateful inspection, restricting PREROUTING DNAT rules exclusively to verified destination ports.',
-      icon: Server,
+      title: 'Passwords',
+      rule: 'Never publish',
+      emoji: '🔑',
+      desc: 'Router root credentials, LuCI administrative logins, and VPS SSH account passwords remain strictly confidential and never appear in git commits or markdown files.',
       color: 'text-amber-400 border-amber-500/30 bg-amber-500/10',
     },
     {
-      title: 'Credentials & Tokens Remain Private',
-      desc: 'Cloudflare API tokens, router root passwords, dynamic DNS credentials, and WireGuard preshared keys are omitted or replaced with [REDACTED] in all documentation.',
-      icon: EyeOff,
+      title: 'API Tokens',
+      rule: 'Never publish',
+      emoji: '☁️',
+      desc: 'Cloudflare API keys, Dynamic DNS update tokens, and cloud account credentials are sanitized and replaced with [REDACTED] in all public repositories and documentation.',
+      color: 'text-sky-400 border-sky-500/30 bg-sky-500/10',
+    },
+    {
+      title: 'Exposed Ports',
+      rule: 'Only required services',
+      emoji: '🌐',
+      desc: 'Only essential sockets (TCP 853 for DoT, TCP 8443 for HTTPS Web UI) are forwarded across the tunnel. Standard unencrypted DNS (port 53) is bound strictly to local LAN.',
+      color: 'text-emerald-400 border-emerald-500/30 bg-emerald-500/10',
+    },
+    {
+      title: 'Firewall',
+      rule: 'Restrict unnecessary traffic',
+      emoji: '🛡️',
+      desc: 'Default-drop policy on all ingress zones. Stateful conntrack tracking and specific iptables PREROUTING DNAT rules reject any unsolicited connection attempts.',
+      color: 'text-purple-400 border-purple-500/30 bg-purple-500/10',
+    },
+    {
+      title: 'TLS',
+      rule: 'Use valid certificates',
+      emoji: '🔒',
+      desc: 'All external communications require valid Let\'s Encrypt certificates chaining to ISRG Root X1. Self-signed or expired certificates are rejected by Android Private DNS.',
       color: 'text-teal-400 border-teal-500/30 bg-teal-500/10',
     },
   ];
@@ -59,13 +57,13 @@ export const SecuritySection: React.FC = () => {
         <div className="max-w-3xl space-y-3">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono bg-rose-500/10 text-rose-400 border border-rose-500/20">
             <ShieldAlert className="w-3.5 h-3.5" />
-            <span>Operational Security & Defensive Architecture</span>
+            <span>Security Center & Defensive Architecture</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-mono tracking-tight">
-            Security Posture & Defensive Design
+            Security Center
           </h2>
           <p className="text-sm sm:text-base text-lab-textMuted leading-relaxed font-sans">
-            Running internet-facing services behind CGNAT requires rigorous cryptographic hygiene, least-privilege firewall rules, and absolute protection of private material.
+            Rigorous cryptographic hygiene, least-privilege firewalling, and strict protection of secrets across the UN1CA JioWrt environment.
           </p>
         </div>
 
@@ -76,42 +74,44 @@ export const SecuritySection: React.FC = () => {
           </div>
           <div className="space-y-1">
             <h3 className="text-sm sm:text-base font-bold text-white font-mono uppercase tracking-wide">
-              Mandatory Security Warning:
+              Mandatory Security Posture:
             </h3>
-            <p className="text-sm font-mono text-rose-200 font-bold leading-relaxed">
-              "Never copy private keys, passwords or API tokens into public documentation."
+            <p className="text-base font-mono text-rose-200 font-bold leading-relaxed">
+              "Never publish secrets in public documentation."
             </p>
             <p className="text-xs text-lab-textMuted font-sans pt-1">
-              All configurations, logs, and shell snippets on this website have been screened and sanitized. Live tokens, private keys, and passwords must never be committed to source code or displayed publicly.
+              Never copy private keys, passwords or API tokens into public documentation. All configurations, logs, and shell snippets on this website have been screened and sanitized.
             </p>
           </div>
         </div>
 
         {/* 6 Security Pillars Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {securityPillars.map((pillar, idx) => {
-            const Icon = pillar.icon;
-            return (
-              <div
-                key={idx}
-                className="glass-panel p-6 rounded-2xl border border-lab-border space-y-3 flex flex-col justify-between hover:border-sky-500/30 transition-all"
-              >
-                <div>
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className={`w-9 h-9 rounded-xl border flex items-center justify-center ${pillar.color}`}>
-                      <Icon className="w-4 h-4" />
-                    </div>
+          {securityPillars.map((pillar, idx) => (
+            <div
+              key={idx}
+              className="glass-panel p-6 rounded-2xl border border-lab-border space-y-3 flex flex-col justify-between hover:border-sky-500/30 transition-all group"
+            >
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-3">
+                  <div className="flex items-center gap-2.5">
+                    <span className="text-xl select-none" role="img" aria-label={pillar.title}>
+                      {pillar.emoji}
+                    </span>
                     <h4 className="text-sm font-bold text-white font-mono">
                       {pillar.title}
                     </h4>
                   </div>
-                  <p className="text-xs text-lab-textMuted leading-relaxed font-sans">
-                    {pillar.desc}
-                  </p>
+                  <span className={`text-[10px] font-mono px-2 py-0.5 rounded border uppercase tracking-wider font-bold ${pillar.color}`}>
+                    {pillar.rule}
+                  </span>
                 </div>
+                <p className="text-xs text-lab-textMuted leading-relaxed font-sans">
+                  {pillar.desc}
+                </p>
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
     </section>

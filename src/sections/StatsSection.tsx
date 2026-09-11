@@ -112,11 +112,101 @@ export const StatsSection: React.FC = () => {
 
         {/* Tab 2: Core Active Ports & Topology Allocations */}
         {activeTab === 'ports' && (
-          <div className="space-y-4">
+          <div className="space-y-6">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {quickStatsData.map((stat, idx) => (
                 <StatCard key={idx} stat={stat} />
               ))}
+            </div>
+
+            {/* Responsive Dedicated Ports Reference Table (Requirement 20) */}
+            <div className="glass-panel p-5 sm:p-6 rounded-2xl border border-lab-border overflow-hidden">
+              <div className="flex items-center justify-between mb-4 border-b border-lab-borderSubtle pb-3">
+                <div className="flex items-center gap-2">
+                  <Activity className="w-4 h-4 text-sky-400" />
+                  <h3 className="text-sm font-bold font-mono text-white uppercase tracking-wider">
+                    Core Port Reference Matrix
+                  </h3>
+                </div>
+                <span className="text-[10px] font-mono text-lab-textDim">
+                  Standard Home Lab Bindings
+                </span>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="w-full text-left text-xs font-mono">
+                  <thead>
+                    <tr className="border-b border-lab-border text-lab-textDim text-[11px] uppercase tracking-wider">
+                      <th className="py-2.5 px-3">Service</th>
+                      <th className="py-2.5 px-3">Port</th>
+                      <th className="py-2.5 px-3">Protocol</th>
+                      <th className="py-2.5 px-3">Purpose</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-lab-borderSubtle text-lab-text">
+                    <tr className="hover:bg-lab-surfaceElevated/50 transition-colors">
+                      <td className="py-3 px-3 font-bold text-white flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                        <span>DNS</span>
+                      </td>
+                      <td className="py-3 px-3">
+                        <code className="text-sky-300 bg-black/40 px-2 py-0.5 rounded border border-lab-borderSubtle">53</code>
+                      </td>
+                      <td className="py-3 px-3">
+                        <span className="px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 text-[10px]">
+                          TCP/UDP
+                        </span>
+                      </td>
+                      <td className="py-3 px-3 text-lab-textMuted">Local network DNS resolution & caching</td>
+                    </tr>
+                    <tr className="hover:bg-lab-surfaceElevated/50 transition-colors">
+                      <td className="py-3 px-3 font-bold text-white flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-purple-400" />
+                        <span>DoT</span>
+                      </td>
+                      <td className="py-3 px-3">
+                        <code className="text-purple-300 bg-black/40 px-2 py-0.5 rounded border border-lab-borderSubtle">853</code>
+                      </td>
+                      <td className="py-3 px-3">
+                        <span className="px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20 text-[10px]">
+                          TCP
+                        </span>
+                      </td>
+                      <td className="py-3 px-3 text-lab-textMuted">DNS over TLS (RFC 7858 Private DNS)</td>
+                    </tr>
+                    <tr className="hover:bg-lab-surfaceElevated/50 transition-colors">
+                      <td className="py-3 px-3 font-bold text-white flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-sky-400" />
+                        <span>AdGuard HTTPS</span>
+                      </td>
+                      <td className="py-3 px-3">
+                        <code className="text-sky-300 bg-black/40 px-2 py-0.5 rounded border border-lab-borderSubtle">8443</code>
+                      </td>
+                      <td className="py-3 px-3">
+                        <span className="px-2 py-0.5 rounded bg-sky-500/10 text-sky-300 border border-sky-500/20 text-[10px]">
+                          TCP
+                        </span>
+                      </td>
+                      <td className="py-3 px-3 text-lab-textMuted">Encrypted AdGuard administrative dashboard</td>
+                    </tr>
+                    <tr className="hover:bg-lab-surfaceElevated/50 transition-colors">
+                      <td className="py-3 px-3 font-bold text-white flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-amber-400" />
+                        <span>WireGuard</span>
+                      </td>
+                      <td className="py-3 px-3">
+                        <code className="text-amber-300 bg-black/40 px-2 py-0.5 rounded border border-lab-borderSubtle">51820</code>
+                      </td>
+                      <td className="py-3 px-3">
+                        <span className="px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20 text-[10px]">
+                          UDP
+                        </span>
+                      </td>
+                      <td className="py-3 px-3 text-lab-textMuted">Encrypted point-to-point VPN tunnel</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         )}

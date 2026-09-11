@@ -93,7 +93,9 @@ export const TroubleshootingTable: React.FC<TroubleshootingTableProps> = ({ item
           <span className="font-bold">Structure:</span>
           <span>Problem</span>
           <ArrowRight className="w-3 h-3" />
-          <span>Diagnosis</span>
+          <span>Investigation</span>
+          <ArrowRight className="w-3 h-3" />
+          <span>Command/Test</span>
           <ArrowRight className="w-3 h-3" />
           <span>Fix</span>
           <ArrowRight className="w-3 h-3" />
@@ -147,7 +149,7 @@ export const TroubleshootingTable: React.FC<TroubleshootingTableProps> = ({ item
                         {item.problem}
                       </h4>
                       <p className="text-xs text-lab-textMuted mt-1 line-clamp-1 font-sans">
-                        <span className="text-lab-textDim font-mono mr-1">Quick Diagnosis:</span>
+                        <span className="text-lab-textDim font-mono mr-1">Investigation:</span>
                         {item.diagnosis}
                       </p>
                     </div>
@@ -161,16 +163,16 @@ export const TroubleshootingTable: React.FC<TroubleshootingTableProps> = ({ item
                   </button>
                 </div>
 
-                {/* Expanded: Problem -> Diagnosis -> Fix -> Result */}
+                {/* Expanded: Problem -> Investigation -> Fix -> Result */}
                 {isExpanded && (
                   <div className="px-5 pb-6 border-t border-lab-borderSubtle pt-5 space-y-4">
                     {/* 4 Steps Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-                      {/* Step 1: Diagnosis */}
+                      {/* Step 1: Investigation */}
                       <div className="bg-black/50 p-4 rounded-2xl border border-sky-500/30 space-y-2">
                         <div className="text-[10px] font-mono uppercase tracking-wider text-sky-400 font-bold flex items-center gap-1.5">
                           <Search className="w-3.5 h-3.5" />
-                          <span>1. Diagnosis</span>
+                          <span>1. Investigation</span>
                         </div>
                         <p className="text-lab-text leading-relaxed font-sans">
                           {item.diagnosis}
@@ -181,7 +183,7 @@ export const TroubleshootingTable: React.FC<TroubleshootingTableProps> = ({ item
                       <div className="bg-black/50 p-4 rounded-2xl border border-emerald-500/30 space-y-2">
                         <div className="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold flex items-center gap-1.5">
                           <Wrench className="w-3.5 h-3.5" />
-                          <span>2. Fix Applied</span>
+                          <span>2. Fix</span>
                         </div>
                         <p className="text-lab-text leading-relaxed font-sans">
                           {item.fix}
@@ -192,7 +194,7 @@ export const TroubleshootingTable: React.FC<TroubleshootingTableProps> = ({ item
                       <div className="bg-black/50 p-4 rounded-2xl border border-purple-500/30 space-y-2">
                         <div className="text-[10px] font-mono uppercase tracking-wider text-purple-400 font-bold flex items-center gap-1.5">
                           <CheckCircle2 className="w-3.5 h-3.5" />
-                          <span>3. Final Result</span>
+                          <span>3. Result</span>
                         </div>
                         <p className="text-lab-text leading-relaxed font-sans">
                           {item.result}
@@ -205,7 +207,7 @@ export const TroubleshootingTable: React.FC<TroubleshootingTableProps> = ({ item
                       <div className="space-y-2 pt-2">
                         <div className="text-xs font-mono uppercase tracking-wider text-amber-400 font-bold flex items-center gap-1.5">
                           <Wrench className="w-3.5 h-3.5" />
-                          <span>Verification & Execution Commands</span>
+                          <span>Command / Test Verification</span>
                         </div>
                         <div className="space-y-2.5">
                           {item.commands.map((cmd, idx) => (

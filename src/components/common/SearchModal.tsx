@@ -39,6 +39,24 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
 
   const q = query.toLowerCase().trim();
 
+  // Documentation Topics (Requirement 18: Architecture, Commands, Troubleshooting, DNS, WireGuard, AdGuard, VPS, Cloudflare, TLS, Firewall)
+  const documentationTopics = [
+    { title: 'Network Architecture & Conceptual Topology', keywords: ['architecture', 'topology', 'network', 'mesh', 'diagram'], href: '#architecture', badge: 'Architecture' },
+    { title: 'Production Shell Commands & Rationale', keywords: ['commands', 'shell', 'cli', 'bash', 'terminal', 'wg show', 'sysctl', 'netstat'], href: '#commands', badge: 'Commands' },
+    { title: 'Troubleshooting Journal & Problem Solutions', keywords: ['troubleshooting', 'debug', 'fixes', 'issues', 'problems', 'journal'], href: '#troubleshooting', badge: 'Troubleshooting' },
+    { title: 'DNS Resolution & Android Private DNS (RFC 7858)', keywords: ['dns', 'private dns', 'filtering', 'resolver', 'dot', 'doh', 'un1ca.dpdns.org'], href: '#overview', badge: 'DNS' },
+    { title: 'WireGuard Point-to-Point Overlay Tunnel', keywords: ['wireguard', 'tunnel', 'overlay', 'vpn', 'keepalive', 'wg0', 'wg_oracle', '51820'], href: '#deep-dives', badge: 'WireGuard' },
+    { title: 'AdGuard Home v0.107.78 DNS Engine', keywords: ['adguard', 'adguardhome', 'adguard home', 'port 53', 'port 853', 'port 8443'], href: '#overview', badge: 'AdGuard' },
+    { title: 'Oracle Cloud VPS & CGNAT Ingress Anchor', keywords: ['vps', 'oracle', 'ubuntu', '140.238.244.202', 'cloud', 'cgnat'], href: '#cgnat-case-study', badge: 'VPS' },
+    { title: 'Cloudflare Pages & Global Edge Infrastructure', keywords: ['cloudflare', 'pages', 'edge', 'un1ca.qzz.io', 'cdn', 'wrangler'], href: '#overview', badge: 'Cloudflare' },
+    { title: 'TLS / SSL Cryptographic Verification & ACME', keywords: ['tls', 'ssl', 'certificate', 'modulus', 'openssl', 'sni', 'crypto'], href: '#deep-dives', badge: 'TLS' },
+    { title: 'Firewall, iptables NAT & Security Center', keywords: ['firewall', 'iptables', 'nat', 'dnat', 'masquerade', 'security', 'ports'], href: '#security', badge: 'Firewall' },
+  ];
+
+  const matchingTopics = documentationTopics.filter(
+    (t) => !q || t.title.toLowerCase().includes(q) || t.badge.toLowerCase().includes(q) || t.keywords.some((k) => k.includes(q))
+  );
+
   // Search Results
   const matchingDays = timelineDaysData.filter(
     (d) =>
@@ -105,6 +123,36 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
 
         {/* Results Area */}
         <div className="overflow-y-auto p-4 space-y-6 text-xs font-mono">
+          {/* Documentation Topics & Core Sections */}
+          {matchingTopics.length > 0 && (
+            <div className="space-y-2">
+              <div className="text-[11px] font-bold text-lab-textDim uppercase tracking-wider flex items-center gap-1.5">
+                <Search className="w-3.5 h-3.5 text-purple-400" />
+                <span>Documentation Sections & Guides ({matchingTopics.length})</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {matchingTopics.map((topic, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => handleSelect(topic.href)}
+                    type="button"
+                    className="text-left p-2.5 rounded-xl bg-lab-surface/80 hover:bg-lab-surface transition-colors flex items-center justify-between group border border-lab-borderSubtle hover:border-purple-500/40"
+                  >
+                    <div className="truncate pr-2">
+                      <span className="text-[9px] px-1.5 py-0.2 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20 font-bold uppercase mr-1.5">
+                        {topic.badge}
+                      </span>
+                      <span className="text-white font-bold group-hover:text-purple-300 text-xs">
+                        {topic.title}
+                      </span>
+                    </div>
+                    <ArrowRight className="w-3.5 h-3.5 text-lab-textDim group-hover:text-purple-400 shrink-0" />
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Timeline Days */}
           {matchingDays.length > 0 && (
             <div className="space-y-2">

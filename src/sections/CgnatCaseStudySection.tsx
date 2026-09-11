@@ -24,44 +24,44 @@ export const CgnatCaseStudySection: React.FC = () => {
 
   const cgnatFlowStages = [
     {
-      title: 'Mobile / ISP Network',
-      sub: 'Client Queries (4G/5G)',
+      title: 'Jio ISP',
+      sub: 'Carrier Network Gateway',
       desc: 'External smartphones and cellular clients send DNS-over-TLS (port 853) queries towards un1ca.dpdns.org.',
       icon: Smartphone,
       color: 'text-purple-400 bg-purple-500/10 border-purple-500/30',
     },
     {
-      title: 'CGNAT Barrier',
-      sub: 'ISP Carrier NAT (100.64.0.0/10)',
-      desc: 'ISP strictly drops unsolicited inbound ports. Home router cannot be reached directly via public IPv4.',
+      title: 'CGNAT',
+      sub: 'Carrier-Grade NAT (100.64.0.0/10)',
+      desc: 'ISP strictly drops unsolicited inbound connections. The home router has no public IP and cannot be reached directly.',
       icon: AlertTriangle,
       color: 'text-amber-400 bg-amber-500/10 border-amber-500/30',
     },
     {
-      title: 'JioWrt Gateway',
-      sub: 'OpenWrt (10.200.0.2)',
-      desc: 'Home router initiates outbound UDP tunnel to VPS with PersistentKeepalive=25 to keep ISP NAT state open.',
+      title: 'JioWrt',
+      sub: 'Home Lab Router (10.200.0.2)',
+      desc: 'Initiates an outbound persistent WireGuard connection (PersistentKeepalive=25) to preserve state table entries.',
       icon: Cpu,
       color: 'text-sky-400 bg-sky-500/10 border-sky-500/30',
     },
     {
       title: 'WireGuard Tunnel',
-      sub: 'Kernel Overlay (10.200.0.0/24)',
-      desc: 'Encrypted bi-directional ChaCha20-Poly1305 channel carrying encapsulated TCP 853 / 8443 traffic.',
+      sub: 'Encrypted Overlay (10.200.0.0/24)',
+      desc: 'Encrypted bi-directional ChaCha20-Poly1305 channel carrying encapsulated TCP 853 / 8443 traffic securely.',
       icon: Radio,
       color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30',
     },
     {
-      title: 'Public VPS Anchor',
+      title: 'Public VPS',
       sub: 'Oracle Cloud (140.238.244.202)',
-      desc: 'Publicly reachable static IP with iptables PREROUTING DNAT rules forwarding TCP 853/8443 into the tunnel.',
+      desc: 'Public static IP endpoint with iptables PREROUTING DNAT rules forwarding inbound traffic into the tunnel.',
       icon: Server,
       color: 'text-indigo-400 bg-indigo-500/10 border-indigo-500/30',
     },
     {
-      title: 'Internet / Remote Clients',
-      sub: 'Global Ad-Free DNS Access',
-      desc: 'Any device anywhere in the world reaches the home lab AdGuard Home resolver transparently.',
+      title: 'Internet',
+      sub: 'Remote Clients & Global Access',
+      desc: 'Android devices, laptops, and remote clients reach the home lab AdGuard Home resolver transparently worldwide.',
       icon: Globe,
       color: 'text-teal-400 bg-teal-500/10 border-teal-500/30',
     },
@@ -77,10 +77,10 @@ export const CgnatCaseStudySection: React.FC = () => {
             <span>Dedicated Architectural Section</span>
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-white font-mono tracking-tight">
-            CGNAT Traversal Architecture
+            How I Solved the CGNAT Problem
           </h2>
           <p className="text-sm sm:text-base text-lab-textMuted leading-relaxed font-sans">
-            How the UN1CA JioWrt Home Lab exposes private DNS services behind carrier-grade NAT without paying for a static IP or port forwarding on the ISP router.
+            Direct inbound connections are impossible behind Carrier-Grade NAT (CGNAT). Here is how the Oracle VPS acts as the public endpoint and WireGuard provides the secure reverse tunnel back to the Home Lab — without router port forwarding.
           </p>
         </div>
 

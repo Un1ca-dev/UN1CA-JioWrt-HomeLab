@@ -198,9 +198,9 @@ export const AboutCreatorSection: React.FC = () => {
                 <p className="pl-6 pt-1 font-mono text-xs sm:text-sm text-sky-200 leading-relaxed font-medium">
                   I'm Suman Sheikh, the creator of UN1CA JioWrt Home Lab.
                   <br /><br />
-                  This project started with a Jio Router and gradually evolved into a powerful self-hosted networking environment. I experimented with OpenWrt, AdGuard Home, WireGuard, VPS infrastructure, Private DNS, Cloudflare and secure remote access.
+                  What started as experimentation with a Jio Router evolved into a complete Home Lab involving OpenWrt, DNS, AdGuard Home, WireGuard, VPS infrastructure, Cloudflare and secure remote access.
                   <br /><br />
-                  This website documents that journey — including the architecture, configuration, troubleshooting and commands used along the way.
+                  This website documents the journey — including architecture, commands, troubleshooting and lessons learned.
                 </p>
               </div>
 

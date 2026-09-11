@@ -97,7 +97,7 @@ export const HeroSection: React.FC = () => {
               UN1CA <span className="bg-gradient-to-r from-sky-400 via-teal-300 to-indigo-400 bg-clip-text text-transparent">JioWrt</span>
             </h1>
             <p className="text-base sm:text-xl font-mono text-sky-200/90 font-medium tracking-wide">
-              "From a Jio Router to a complete self-hosted Home Lab."
+              "From a Jio Router to a complete self-hosted networking environment."
             </p>
           </div>
 
@@ -117,11 +117,11 @@ export const HeroSection: React.FC = () => {
             </a>
 
             <a
-              href="#journey"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-mono text-xs sm:text-sm font-bold shadow-lg shadow-amber-500/25 transition-all hover:-translate-y-0.5"
+              href="#architecture"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-lab-surfaceElevated hover:bg-lab-surfaceHover border border-lab-border text-white font-mono text-xs sm:text-sm font-medium transition-all hover:border-sky-500/40"
             >
-              <BookOpen className="w-4 h-4 text-slate-950" />
-              <span>View Setup Journey</span>
+              <Network className="w-4 h-4 text-purple-400" />
+              <span>Architecture</span>
             </a>
 
             <a
@@ -130,14 +130,6 @@ export const HeroSection: React.FC = () => {
             >
               <Terminal className="w-4 h-4 text-sky-400" />
               <span>Documentation</span>
-            </a>
-
-            <a
-              href="#architecture"
-              className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-lab-surfaceElevated hover:bg-lab-surfaceHover border border-lab-border text-white font-mono text-xs sm:text-sm font-medium transition-all hover:border-sky-500/40"
-            >
-              <Network className="w-4 h-4 text-purple-400" />
-              <span>Architecture</span>
             </a>
 
             <a

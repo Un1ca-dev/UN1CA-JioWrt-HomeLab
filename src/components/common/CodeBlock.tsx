@@ -109,7 +109,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
         <div className="border-t border-lab-border bg-black/60 p-3.5 text-xs font-mono">
           <div className="text-lab-textDim text-[10px] uppercase font-bold tracking-wider mb-1.5 flex items-center gap-1">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-            STDOUT / Verification Output
+            EXPECTED RESULT
           </div>
           <pre className="text-emerald-300/90 whitespace-pre-wrap overflow-x-auto leading-relaxed">
             {output}
@@ -122,7 +122,7 @@ export const CodeBlock: React.FC<CodeBlockProps> = ({
         <div className="border-t border-lab-borderSubtle bg-lab-surface/50 px-4 py-2.5 text-xs text-lab-textMuted flex flex-col gap-1.5">
           {explanation && (
             <div className="leading-relaxed">
-              <span className="font-semibold text-lab-text font-mono text-[11px] mr-1">Explanation:</span>
+              <span className="font-semibold text-lab-text font-mono text-[11px] mr-1">NOTES:</span>
               {explanation}
             </div>
           )}

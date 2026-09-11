@@ -66,6 +66,24 @@ export const commandsLibrary: CommandCategory[] = [
     targetOs: 'JioWrt (OpenWrt)',
     commands: [
       {
+        cmd: 'wg show',
+        lang: 'bash',
+        shellTitle: 'JioWrt / VPS Shell',
+        purpose: 'Checks active WireGuard interfaces, connected peers, and transfer stats.',
+        explanation: 'Audits listening ports, peer public keys, endpoints, and persistent keepalives across all active tunnels.',
+        output: `interface: wg_oracle
+  public key: [REDACTED_PUBLIC_KEY]
+  private key: (hidden)
+  listening port: 60353
+
+peer: [REDACTED_VPS_PEER_KEY]
+  endpoint: 140.238.244.202:51820
+  allowed ips: 10.200.0.0/24
+  latest handshake: 12 seconds ago
+  transfer: 1.84 MiB received, 2.45 MiB sent
+  persistent keepalive: every 25 seconds`,
+      },
+      {
         cmd: 'wg show wg_oracle',
         lang: 'bash',
         shellTitle: 'JioWrt OpenWrt Shell',
@@ -112,6 +130,21 @@ peer: [REDACTED_WARP_PEER_KEY]
     targetOs: 'JioWrt (OpenWrt)',
     commands: [
       {
+        cmd: 'netstat -lntup',
+        lang: 'bash',
+        shellTitle: 'JioWrt OpenWrt Shell',
+        purpose: 'Check listening services and open socket bindings across TCP and UDP.',
+        explanation: 'Verifies active network listeners to identify which process is claiming ports 53, 853, and 8443.',
+        output: `Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name    
+tcp        0      0 0.0.0.0:8443            0.0.0.0:*               LISTEN      2145/AdGuardHome
+tcp        0      0 0.0.0.0:5353            0.0.0.0:*               LISTEN      1420/dnsmasq
+tcp        0      0 :::53                   :::*                    LISTEN      2145/AdGuardHome
+tcp        0      0 :::853                  :::*                    LISTEN      2145/AdGuardHome
+udp        0      0 0.0.0.0:5353            0.0.0.0:*                           1420/dnsmasq
+udp        0      0 :::53                   :::*                                2145/AdGuardHome`,
+      },
+      {
         cmd: "netstat -lntup | grep -E '(:53|:853|:8443)'",
         lang: 'bash',
         shellTitle: 'JioWrt OpenWrt Shell',
@@ -154,6 +187,19 @@ daemon.info AdGuardHome[2145]: [info] AdGuard Home is ready`,
     badge: 'DNS Resolution',
     targetOs: 'JioWrt (OpenWrt)',
     commands: [
+      {
+        cmd: 'nslookup un1ca.dpdns.org 1.1.1.1',
+        lang: 'bash',
+        shellTitle: 'DNS Test Terminal',
+        purpose: 'DNS test querying public Cloudflare resolver (1.1.1.1) for Home Lab hostname.',
+        explanation: 'Validates that un1ca.dpdns.org resolves globally to the Oracle VPS public IP address (140.238.244.202).',
+        output: `Server:    1.1.1.1
+Address:   1.1.1.1:53
+
+Non-authoritative answer:
+Name:      un1ca.dpdns.org
+Address:   140.238.244.202`,
+      },
       {
         cmd: 'nslookup google.com 127.0.0.1',
         lang: 'bash',

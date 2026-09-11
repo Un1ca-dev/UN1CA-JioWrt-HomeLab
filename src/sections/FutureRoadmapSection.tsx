@@ -23,8 +23,76 @@ export const FutureRoadmapSection: React.FC = () => {
             Future Plans & Architecture Roadmap
           </h2>
           <p className="text-sm sm:text-base text-lab-textMuted leading-relaxed">
-            The UN1CA JioWrt project is continuously evolving. Below is the technical roadmap outlining configured baseline components alongside planned enhancements.
+            The UN1CA JioWrt project is continuously evolving. Below is the technical breakdown clearly distinguishing completed production features from planned future enhancements.
           </p>
+        </div>
+
+        {/* Completed vs Planned Highlights Matrix (Requirement 22) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Completed Features */}
+          <div className="glass-panel p-5 sm:p-6 rounded-3xl border border-emerald-500/30 bg-emerald-950/10 space-y-4">
+            <div className="flex items-center justify-between border-b border-lab-borderSubtle pb-3">
+              <div className="flex items-center gap-2 font-mono font-bold text-white text-sm">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                <span>Completed Baseline Features</span>
+              </div>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 font-bold uppercase">
+                8 / 8 Production Ready
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2.5 text-xs font-mono">
+              {[
+                { name: 'OpenWrt', sub: 'Custom firmware gateway' },
+                { name: 'AdGuard Home', sub: 'DNS filtering engine' },
+                { name: 'Private DNS', sub: 'Android DoT port 853' },
+                { name: 'WireGuard', sub: 'Kernel overlay tunnel' },
+                { name: 'VPS', sub: 'Public ingress endpoint' },
+                { name: 'CGNAT architecture', sub: 'Reverse DNAT traversal' },
+                { name: 'TLS', sub: 'Let\'s Encrypt verification' },
+                { name: 'Cloudflare', sub: 'Pages & edge DNS' },
+              ].map((item, idx) => (
+                <div key={idx} className="bg-black/40 p-2.5 rounded-xl border border-emerald-500/20 flex items-start gap-2">
+                  <span className="text-emerald-400 font-bold">✓</span>
+                  <div>
+                    <div className="text-white font-bold text-[11px]">{item.name}</div>
+                    <div className="text-lab-textDim text-[10px]">{item.sub}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Future Planned Features */}
+          <div className="glass-panel p-5 sm:p-6 rounded-3xl border border-purple-500/30 bg-purple-950/10 space-y-4">
+            <div className="flex items-center justify-between border-b border-lab-borderSubtle pb-3">
+              <div className="flex items-center gap-2 font-mono font-bold text-white text-sm">
+                <Clock className="w-4 h-4 text-purple-400" />
+                <span>Future Roadmap Milestones</span>
+              </div>
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-500/10 text-purple-300 border border-purple-500/20 font-bold uppercase">
+                7 Planned
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2.5 text-xs font-mono">
+              {[
+                { name: 'Certificate monitoring', sub: 'Automated expiry alerts' },
+                { name: 'Service monitoring', sub: 'Uptime Kuma & status checks' },
+                { name: 'Backup automation', sub: 'Encrypted S3 snapshots' },
+                { name: 'More self-hosted services', sub: 'Internal homelab apps' },
+                { name: 'IPv6 improvements', sub: 'Native IPv6 DoT routing' },
+                { name: 'Automated deployment', sub: 'CI/CD pipeline hooks' },
+                { name: 'Better observability', sub: 'Prometheus & Grafana' },
+              ].map((item, idx) => (
+                <div key={idx} className="bg-black/40 p-2.5 rounded-xl border border-purple-500/20 flex items-start gap-2">
+                  <span className="text-purple-400 font-bold">○</span>
+                  <div>
+                    <div className="text-white font-bold text-[11px]">{item.name}</div>
+                    <div className="text-lab-textDim text-[10px]">{item.sub}</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Filter Bar */}

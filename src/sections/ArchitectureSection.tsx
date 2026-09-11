@@ -1,4 +1,5 @@
 import React from 'react';
+import { ConceptualTopologyMap } from '../components/architecture/ConceptualTopologyMap';
 import { ArchitectureDiagram } from '../components/architecture/ArchitectureDiagram';
 import { TunnelComparison } from '../components/architecture/TunnelComparison';
 import { Network, Sparkles, ShieldCheck } from 'lucide-react';
@@ -20,6 +21,9 @@ export const ArchitectureSection: React.FC = () => {
             By coupling an Always Free Oracle Cloud VPS with reverse WireGuard point-to-point tunneling, incoming DNS-over-TLS packets from mobile clients bypass the Jio ISP Carrier-Grade NAT (CGNAT) constraint seamlessly.
           </p>
         </div>
+
+        {/* Conceptual Topology Map (Requirement 3 & 17) */}
+        <ConceptualTopologyMap />
 
         {/* Interactive Architecture Diagram */}
         <ArchitectureDiagram />
