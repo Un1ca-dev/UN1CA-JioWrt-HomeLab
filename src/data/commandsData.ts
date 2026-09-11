@@ -10,19 +10,21 @@ export interface CommandCategory {
 }
 
 export const commandsLibrary: CommandCategory[] = [
+  // 1. OpenWrt
   {
-    id: 'openwrt-foundation',
-    name: 'OpenWrt Network & Interface Auditing',
+    id: 'openwrt',
+    name: 'OpenWrt Interface & Kernel Administration',
     description: 'Kernel routing tables, interface addresses, and IP forwarding flags on the Jio router gateway.',
-    badge: 'JioWrt OpenWrt',
+    badge: 'OpenWrt',
     targetOs: 'JioWrt (OpenWrt)',
     commands: [
       {
         cmd: 'ip -4 addr show',
         lang: 'bash',
         shellTitle: 'JioWrt OpenWrt Shell',
-        explanation: 'Lists all IPv4 network addresses configured across physical and virtual interfaces.',
-        why: 'Crucial for confirming br-lan (192.168.1.1), phy1-ap1 (192.168.10.1), and wan (10.103.50.2) states.',
+        purpose: 'Lists all IPv4 network addresses configured across physical and virtual interfaces.',
+        explanation: 'Audits network bindings to confirm br-lan (192.168.1.1), phy1-ap1 (192.168.10.1), and wan.',
+        warningOrNotes: 'Verify that br-lan is bound to 192.168.1.1/24 before applying firewall changes.',
         output: `1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN
 2: br-lan: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP
     inet 192.168.1.1/24 brd 192.168.1.255 scope global br-lan
@@ -35,13 +37,12 @@ export const commandsLibrary: CommandCategory[] = [
         cmd: 'ip -4 route show',
         lang: 'bash',
         shellTitle: 'JioWrt OpenWrt Shell',
-        explanation: 'Dumps the kernel IPv4 routing table showing default gateway, overlay routes, and WAN paths.',
-        why: 'Confirms that packets destined for external subnets use 10.103.50.1, while overlay traffic routes via wg_oracle.',
+        purpose: 'Dumps the kernel IPv4 routing table showing default gateway, overlay routes, and WAN paths.',
+        explanation: 'Confirms that packets destined for external subnets use WAN gateway, while overlay traffic routes via wg_oracle.',
         output: `default via 10.103.50.1 dev wan
 10.103.50.0/24 dev wan
 10.200.0.0/24 dev wg_oracle
 140.238.244.202 via 10.103.50.1 dev wan
-162.159.192.1 via 10.103.50.1 dev wan
 192.168.1.0/24 dev br-lan
 192.168.10.0/24 dev phy1-ap1`,
       },
@@ -49,25 +50,73 @@ export const commandsLibrary: CommandCategory[] = [
         cmd: 'sysctl net.ipv4.ip_forward',
         lang: 'bash',
         shellTitle: 'JioWrt OpenWrt Shell',
-        explanation: 'Audits whether kernel packet forwarding is active.',
-        why: 'If set to 0, router drops all traffic between LAN, Wi-Fi, and WAN interfaces.',
+        purpose: 'Audits whether kernel packet forwarding is active on the router.',
+        explanation: 'If set to 0, router drops all traffic traversing between LAN, Wi-Fi, and WAN interfaces.',
         output: 'net.ipv4.ip_forward = 1',
       },
     ],
   },
+
+  // 2. WireGuard
   {
-    id: 'adguard-service',
+    id: 'wireguard',
+    name: 'WireGuard Tunnel & Peer Monitoring',
+    description: 'Interface status, handshakes, transfer metrics, and keepalive inspection on wg_oracle and wg_vpn.',
+    badge: 'WireGuard',
+    targetOs: 'JioWrt (OpenWrt)',
+    commands: [
+      {
+        cmd: 'wg show wg_oracle',
+        lang: 'bash',
+        shellTitle: 'JioWrt OpenWrt Shell',
+        purpose: 'Displays live cryptographic status, public keys, and transfer counters for the VPS ingress tunnel.',
+        explanation: 'Proves bidirectional encrypted communication across CGNAT. Latest handshake must be under 2 minutes.',
+        output: `interface: wg_oracle
+  public key: [REDACTED_PUBLIC_KEY]
+  private key: (hidden)
+  listening port: 60353
+
+peer: [REDACTED_VPS_PEER_KEY]
+  endpoint: 140.238.244.202:51820
+  allowed ips: 10.200.0.0/24
+  latest handshake: 14 seconds ago
+  transfer: 1.42 MiB received, 2.18 MiB sent
+  persistent keepalive: every 25 seconds`,
+      },
+      {
+        cmd: 'wg show wg_vpn',
+        lang: 'bash',
+        shellTitle: 'JioWrt OpenWrt Shell',
+        purpose: 'Audits outbound privacy tunnel status connecting to Cloudflare WARP egress.',
+        explanation: 'Ensures upstream queries sent through WARP are actively handshaking and flowing.',
+        output: `interface: wg_vpn
+  public key: [REDACTED_PUBLIC_KEY]
+  private key: (hidden)
+  listening port: 51821
+
+peer: [REDACTED_WARP_PEER_KEY]
+  endpoint: 162.159.193.10:2408
+  allowed ips: 0.0.0.0/0
+  latest handshake: 42 seconds ago
+  transfer: 8.94 MiB received, 3.21 MiB sent`,
+      },
+    ],
+  },
+
+  // 3. AdGuard Home
+  {
+    id: 'adguard-home',
     name: 'AdGuard Home v0.107.78 Service & Sockets',
-    description: 'Daemon management, socket binding audit, and runtime TLS manager log monitoring.',
-    badge: 'AdGuard Core',
+    description: 'Daemon control, listening ports audit (53/853/8443), and real-time query logging.',
+    badge: 'AdGuard Home',
     targetOs: 'JioWrt (OpenWrt)',
     commands: [
       {
         cmd: "netstat -lntup | grep -E '(:53|:853|:8443)'",
         lang: 'bash',
         shellTitle: 'JioWrt OpenWrt Shell',
-        explanation: 'Inspects all listening TCP/UDP sockets for standard DNS (53), DoT (853), and HTTPS (8443).',
-        why: 'Prevents port conflicts with dnsmasq and ensures AdGuard has bound to all necessary protocols.',
+        purpose: 'Inspects all listening sockets for standard DNS (53), DoT (853), and HTTPS Web UI (8443).',
+        explanation: 'Prevents port conflicts with dnsmasq and verifies that AdGuard has claimed all necessary ports.',
         output: `tcp    0    0 :::53            :::*         LISTEN    2145/AdGuardHome
 tcp    0    0 :::853           :::*         LISTEN    2145/AdGuardHome
 tcp    0    0 0.0.0.0:8443     0.0.0.0:*    LISTEN    2145/AdGuardHome
@@ -78,271 +127,273 @@ udp    0    0 0.0.0.0:5353     0.0.0.0:*              1420/dnsmasq`,
         cmd: '/etc/init.d/adguardhome restart',
         lang: 'bash',
         shellTitle: 'JioWrt OpenWrt Shell',
-        explanation: 'Executes procd restart script for the AdGuard Home service daemon.',
-        why: 'Forces AdGuard Home to reload /etc/adguardhome/adguardhome.yaml and refresh TLS certificates.',
+        purpose: 'Restarts the AdGuard Home background service daemon.',
+        explanation: 'Reloads configuration file /etc/adguardhome/adguardhome.yaml and re-reads TLS certificates.',
+        output: 'Restarting AdGuardHome... OK',
       },
       {
-        cmd: 'logread | grep -i tls_manager',
+        cmd: 'logread | grep -i AdGuardHome | tail -n 10',
         lang: 'bash',
         shellTitle: 'JioWrt OpenWrt Shell',
-        explanation: 'Filters memory circular log buffer for the AdGuard TLS manager subsystem.',
-        why: 'Proves certificate chain parsing succeeded without errors and identifies active HTTPS/DoT sockets.',
-        output: `daemon.info AdGuardHome[2390]: [info] tls_manager: parsing multiple pem certificates
-daemon.info AdGuardHome[2390]: [info] tls_manager: verifying certificate chain
-daemon.info AdGuardHome[2390]: [info] tls_manager: certificate chain is valid for un1ca.dpdns.org
-daemon.info AdGuardHome[2390]: [info] webapi: serving url=https://un1ca.dpdns.org:8443
-daemon.info AdGuardHome[2390]: [info] starting https server`,
+        purpose: 'Displays recent operational logs from the AdGuard Home daemon.',
+        explanation: 'Inspects real-time query processing and confirms TLS socket initialization.',
+        output: `daemon.info AdGuardHome[2145]: [info] tcp: listening on [::]:53
+daemon.info AdGuardHome[2145]: [info] udp: listening on [::]:53
+daemon.info AdGuardHome[2145]: [info] tls: listening on [::]:853 (DoT)
+daemon.info AdGuardHome[2145]: [info] web: listening on 0.0.0.0:8443 (HTTPS)
+daemon.info AdGuardHome[2145]: [info] AdGuard Home is ready`,
       },
     ],
   },
+
+  // 4. DNS
   {
-    id: 'tls-verification',
-    name: 'Let\'s Encrypt TLS & Modulus Fingerprinting',
-    description: 'Cryptographic parity verification and file permission hardening commands.',
-    badge: 'OpenSSL / PKI',
+    id: 'dns',
+    name: 'DNS Resolution & Query Auditing',
+    description: 'Local loopback testing, remote DNS lookups, and Private DNS domain resolution verification.',
+    badge: 'DNS Resolution',
     targetOs: 'JioWrt (OpenWrt)',
     commands: [
       {
-        cmd: `openssl x509 -in /etc/adguardhome/router-cert.pem -pubkey -noout | \\
-openssl pkey -pubin -outform DER | sha256sum`,
+        cmd: 'nslookup google.com 127.0.0.1',
         lang: 'bash',
         shellTitle: 'JioWrt OpenWrt Shell',
-        explanation: 'Extracts public key from the X.509 certificate, converts to DER binary, and computes SHA-256 hash.',
-        why: 'Produces a canonical fingerprint of the certificate\'s public modulus to compare against the private key.',
-        output: '13dff6ee5978a97789a3e0e713533be1ebe542e03a4f24c8f54a7cb7363799bf  -',
-      },
-      {
-        cmd: `openssl pkey -in /etc/adguardhome/router-key.pem -pubout | \\
-openssl pkey -pubin -outform DER | sha256sum`,
-        lang: 'bash',
-        shellTitle: 'JioWrt OpenWrt Shell',
-        explanation: 'Computes the SHA-256 hash of the public key derived from the private key file.',
-        why: 'If the hash matches the certificate\'s hash, modulus equality is guaranteed and TLS will not fail.',
-        output: '13dff6ee5978a97789a3e0e713533be1ebe542e03a4f24c8f54a7cb7363799bf  -',
-      },
-      {
-        cmd: `chown adguardhome:adguardhome /etc/adguardhome/router-cert.pem /etc/adguardhome/router-key.pem
-chmod 644 /etc/adguardhome/router-cert.pem
-chmod 600 /etc/adguardhome/router-key.pem`,
-        lang: 'bash',
-        shellTitle: 'JioWrt OpenWrt Shell',
-        explanation: 'Sets least-privilege ownership and permissions on certificate and key files.',
-        why: 'Protects the private key from non-root processes (600) while allowing AdGuard to load it.',
-      },
-    ],
-  },
-  {
-    id: 'dns-testing',
-    name: 'DNS Resolution & OpenSSL Handshake Testing',
-    description: 'Split-Horizon DNS verification, public DNS lookups, and simulated client TLS handshakes.',
-    badge: 'DNS & SSL Tests',
-    targetOs: 'Any Client (Linux / macOS / Windows)',
-    commands: [
-      {
-        cmd: 'dig +short un1ca.dpdns.org',
-        lang: 'bash',
-        shellTitle: 'External Public Terminal',
-        explanation: 'Queries authoritative DNS for the external A-record of un1ca.dpdns.org.',
-        why: 'Verifies that the hostname properly resolves to Oracle VPS public IP (140.238.244.202).',
-        output: '140.238.244.202',
-      },
-      {
-        cmd: 'nslookup un1ca.dpdns.org 1.1.1.1',
-        lang: 'bash',
-        shellTitle: 'External Public Terminal',
-        explanation: 'Queries Cloudflare public DNS (1.1.1.1) to confirm global internet propagation.',
-        why: 'Confirms external mobile networks reach the Oracle VPS ingress anchor.',
-        output: `Server:    1.1.1.1
-Address:   1.1.1.1#53
+        purpose: 'Tests local AdGuard Home port 53 resolution directly on the router loopback.',
+        explanation: 'Verifies that AdGuard Home responds in under 1ms and successfully forwards queries to upstreams.',
+        output: `Server:    127.0.0.1
+Address:   127.0.0.1:53
 
-Name:      un1ca.dpdns.org
-Address:   140.238.244.202`,
+Non-authoritative answer:
+Name:      google.com
+Address:   142.250.196.78`,
       },
       {
-        cmd: 'nslookup un1ca.dpdns.org',
+        cmd: 'nslookup un1ca.dpdns.org 192.168.1.1',
         lang: 'bash',
-        shellTitle: 'Local Home LAN / Wi-Fi Terminal',
-        explanation: 'Queries default local router DNS from a home device.',
-        why: 'Confirms that local Split DNS rewrite returns 192.168.1.1 for local zero-latency routing.',
+        shellTitle: 'LAN Client Terminal',
+        purpose: 'Verifies Split-Horizon DNS resolution for local LAN clients.',
+        explanation: 'Confirms that internal Wi-Fi/Ethernet clients resolve un1ca.dpdns.org directly to 192.168.1.1.',
         output: `Server:    192.168.1.1
-Address:   192.168.1.1#53
+Address:   192.168.1.1:53
 
 Name:      un1ca.dpdns.org
 Address:   192.168.1.1`,
       },
       {
-        cmd: 'openssl s_client -connect un1ca.dpdns.org:853 -servername un1ca.dpdns.org',
+        cmd: 'dig +short un1ca.dpdns.org @1.1.1.1',
         lang: 'bash',
         shellTitle: 'External Internet Terminal',
-        explanation: 'Performs an encrypted TLS handshake against port 853 with Server Name Indication (SNI).',
-        why: 'Simulates the exact RFC 7858 handshake performed by Android Private DNS.',
-        output: `CONNECTED(00000003)
-depth=2 C = US, O = Internet Security Research Group, CN = ISRG Root X1
-verify return:1
-depth=1 C = US, O = Let's Encrypt, CN = YE1
-verify return:1
-depth=0 CN = un1ca.dpdns.org
-verify return:1
----
-Verify return code: 0 (ok)`,
-      },
-      {
-        cmd: 'openssl s_client -connect 192.168.1.1:853 -servername un1ca.dpdns.org',
-        lang: 'bash',
-        shellTitle: 'Local Home LAN Terminal',
-        explanation: 'Validates local TLS handshake against the router IP passing the SNI hostname.',
-        why: 'Ensures Wi-Fi clients also receive the identical trusted Let\'s Encrypt certificate.',
-        output: `CONNECTED(00000003)
-subject=CN=un1ca.dpdns.org
-issuer=C=US, O=Let's Encrypt, CN=YE1
-Verify return code: 0 (ok)`,
+        purpose: 'Verifies public internet DNS resolution for remote clients.',
+        explanation: 'Confirms that external clients resolve un1ca.dpdns.org to the Oracle VPS public IP.',
+        output: '140.238.244.202',
       },
     ],
   },
+
+  // 5. TLS / SSL
   {
-    id: 'vps-iptables',
-    name: 'Oracle VPS Reverse DNAT & Routing Rules',
-    description: 'Kernel forwarding, PREROUTING port translation, and masquerade rules on Ubuntu 20.04.',
-    badge: 'Ubuntu 20.04 VPS',
-    targetOs: 'Oracle Cloud (Ubuntu 20.04)',
-    commands: [
-      {
-        cmd: 'sudo sysctl -w net.ipv4.ip_forward=1',
-        lang: 'bash',
-        shellTitle: 'Oracle VPS (Ubuntu 20.04)',
-        explanation: 'Enables packet forwarding in the Linux kernel on the cloud VPS.',
-        why: 'Allows the VPS kernel to route transit packets between network interface ens3 and WireGuard wg0.',
-        output: 'net.ipv4.ip_forward = 1',
-      },
-      {
-        cmd: `sudo iptables -t nat -A PREROUTING -i ens3 \\
--p tcp --dport 853 \\
--j DNAT --to-destination 10.200.0.2:853`,
-        lang: 'bash',
-        shellTitle: 'Oracle VPS (Ubuntu 20.04)',
-        explanation: 'Rewrites destination of inbound TCP 853 packets to JioWrt WireGuard address (10.200.0.2:853).',
-        why: 'Bypasses CGNAT by funneling public traffic into the reverse tunnel.',
-      },
-      {
-        cmd: `sudo iptables -A FORWARD -i ens3 -o wg0 \\
--p tcp -d 10.200.0.2 --dport 853 \\
--m conntrack --ctstate NEW,ESTABLISHED,RELATED -j ACCEPT`,
-        lang: 'bash',
-        shellTitle: 'Oracle VPS (Ubuntu 20.04)',
-        explanation: 'Permits stateful forwarded traffic from public NIC ens3 into WireGuard overlay wg0.',
-        why: 'Ensures the firewall does not discard the translated DNAT packets.',
-      },
-      {
-        cmd: `sudo iptables -A FORWARD -i wg0 -o ens3 \\
--p tcp -s 10.200.0.2 --sport 853 \\
--m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT`,
-        lang: 'bash',
-        shellTitle: 'Oracle VPS (Ubuntu 20.04)',
-        explanation: 'Allows response packets from JioWrt to exit back out to the mobile client over ens3.',
-        why: 'Maintains bidirectional communication for the DoT session.',
-      },
-      {
-        cmd: `sudo iptables -t nat -A POSTROUTING -o wg0 \\
--p tcp -d 10.200.0.2 --dport 853 \\
--j MASQUERADE`,
-        lang: 'bash',
-        shellTitle: 'Oracle VPS (Ubuntu 20.04)',
-        explanation: 'Applies Source NAT to packets traversing into wg0.',
-        why: 'Guarantees that JioWrt routes responses back over the WireGuard tunnel rather than trying WAN.',
-      },
-      {
-        cmd: 'sudo iptables -t nat -L PREROUTING -n -v | grep 853',
-        lang: 'bash',
-        shellTitle: 'Oracle VPS (Ubuntu 20.04)',
-        explanation: 'Views packet and byte hit counters for the port 853 DNAT rule.',
-        why: 'Immediate confirmation that mobile queries are being received and forwarded.',
-        output: ' 1248   74880 DNAT  tcp  --  ens3  *  0.0.0.0/0  0.0.0.0/0  tcp dpt:853 to:10.200.0.2:853',
-      },
-    ],
-  },
-  {
-    id: 'wireguard-ops',
-    name: 'WireGuard Tunnel Interface Monitoring',
-    description: 'Interface inspection, peer statistics, and route verification for wg_oracle and wg_vpn.',
-    badge: 'WireGuard VPN',
+    id: 'tls-ssl',
+    name: 'TLS / SSL & Modulus Verification',
+    description: 'Certificate chain validation, public/private key matching, and OpenSSL mathematical fingerprinting.',
+    badge: 'TLS & Crypto',
     targetOs: 'JioWrt (OpenWrt)',
     commands: [
       {
-        cmd: 'wg show wg_oracle',
+        cmd: "openssl x509 -in /etc/adguardhome/router-cert.pem -pubkey -noout | openssl pkey -pubin -outform DER | sha256sum",
         lang: 'bash',
         shellTitle: 'JioWrt OpenWrt Shell',
-        explanation: 'Displays WireGuard interface statistics, listening port (60353), handshake, and byte counters.',
-        why: 'Quickly verifies if the tunnel is healthy or if handshakes have timed out.',
-        output: `interface: wg_oracle
-  public key: [REDACTED_JIOWRT_PUBLIC_KEY]
-  listening port: 60353
-peer: oXU65nSKCfc1TfLuFJYUfTZ2y8onxeHwa+prtkCm51U=
-  endpoint: 140.238.244.202:51820
-  allowed ips: 10.200.0.0/24
-  latest handshake: 14 seconds ago
-  transfer: 42.18 MiB received, 18.94 MiB sent
-  persistent keepalive: every 25 seconds`,
+        purpose: 'Calculates the SHA-256 modulus hash of the public key inside the certificate.',
+        explanation: 'Must match the private key hash identically; fixes the "private key does not match public key" error.',
+        output: '13dff6ee5978a97789a3e0e713533be1ebe542e03a4f24c8f54a7cb7363799bf  -',
+      },
+      {
+        cmd: "openssl pkey -in /etc/adguardhome/router-key.pem -pubout | openssl pkey -pubin -outform DER | sha256sum",
+        lang: 'bash',
+        shellTitle: 'JioWrt OpenWrt Shell',
+        purpose: 'Calculates the SHA-256 modulus hash of the private key.',
+        explanation: 'Comparing this against the certificate hash mathematically proves public/private key pair parity.',
+        warningOrNotes: 'Never disclose the contents of router-key.pem. Run sha256sum on the derived public key only.',
+        output: '13dff6ee5978a97789a3e0e713533be1ebe542e03a4f24c8f54a7cb7363799bf  -',
+      },
+      {
+        cmd: 'ls -l /etc/adguardhome/router-*.pem',
+        lang: 'bash',
+        shellTitle: 'JioWrt OpenWrt Shell',
+        purpose: 'Inspects file permissions and ownership on the cryptographic certificates.',
+        explanation: 'Enforces strict chmod 600 on the private key and chmod 644 on the public certificate.',
+        output: `-rw-r--r--    1 root     root          5628 Sep 11 22:30 /etc/adguardhome/router-cert.pem
+-rw-------    1 root     root          3272 Sep 11 22:30 /etc/adguardhome/router-key.pem`,
+      },
+    ],
+  },
+
+  // 6. Cloudflare
+  {
+    id: 'cloudflare',
+    name: 'Cloudflare Pages & Edge Deployment',
+    description: 'Building, testing, and deploying the documentation website to Cloudflare Pages edge network.',
+    badge: 'Cloudflare',
+    targetOs: 'Any Client (Linux / macOS / Windows)',
+    commands: [
+      {
+        cmd: 'npm run build',
+        lang: 'bash',
+        shellTitle: 'Local Workstation',
+        purpose: 'Compiles the TypeScript source files into an optimized static production bundle in dist/.',
+        explanation: 'Runs tsc and Vite bundler to produce production assets, HTML, and service configs.',
+        output: `vite v5.4.21 building for production...
+✓ 1612 modules transformed.
+dist/index.html                   2.88 kB
+dist/assets/index-B12xL1OT.css   43.68 kB
+dist/assets/index-xii-dJ1M.js   376.60 kB
+✓ built in 2.00s`,
+      },
+      {
+        cmd: 'npx wrangler pages deploy dist --project-name un1ca-jiowrt',
+        lang: 'bash',
+        shellTitle: 'Local Workstation',
+        purpose: 'Uploads and publishes the production bundle to Cloudflare Pages edge network.',
+        explanation: 'Transfers static files, _headers, and _redirects to Cloudflare global infrastructure.',
+        output: `✨ Success! Uploaded 4 files (1.88 sec)
+✨ Uploading _headers
+✨ Uploading _redirects
+🌎 Deploying...
+✨ Deployment complete! https://un1ca-jiowrt.pages.dev`,
+      },
+    ],
+  },
+
+  // 7. VPS
+  {
+    id: 'vps',
+    name: 'Oracle Cloud VPS Administration',
+    description: 'Ubuntu 20.04 cloud node service status, WireGuard server status, and kernel forwarding.',
+    badge: 'Oracle Cloud',
+    targetOs: 'Oracle Cloud (Ubuntu 20.04)',
+    commands: [
+      {
+        cmd: 'sudo systemctl status wg-quick@wg0',
+        lang: 'bash',
+        shellTitle: 'Oracle Cloud VPS (Ubuntu 20.04)',
+        purpose: 'Checks the service status of the WireGuard server daemon on the public VPS.',
+        explanation: 'Ensures the wg0 interface is active and listening on UDP port 51820.',
+        output: `● wg-quick@wg0.service - WireGuard via wg-quick(8) for wg0
+     Loaded: loaded (/lib/systemd/system/wg-quick@.service; enabled)
+     Active: active (exited) since Sat 2026-09-05 14:10:22 UTC
+   Main PID: 742 (code=exited, status=0/SUCCESS)`,
       },
       {
         cmd: 'sudo wg show wg0',
         lang: 'bash',
-        shellTitle: 'Oracle VPS (Ubuntu 20.04)',
-        explanation: 'Inspects the server-side WireGuard interface on the Oracle VPS.',
-        why: 'Confirms that the VPS sees the incoming connection from JioWrt and reports active transfer.',
+        shellTitle: 'Oracle Cloud VPS (Ubuntu 20.04)',
+        purpose: 'Displays all active WireGuard peers connected to the VPS.',
+        explanation: 'Confirms that the JioWrt peer (10.200.0.2) is connected and actively sending handshakes.',
         output: `interface: wg0
-  public key: oXU65nSKCfc1TfLuFJYUfTZ2y8onxeHwa+prtkCm51U=
+  public key: [REDACTED_VPS_KEY]
+  private key: (hidden)
   listening port: 51820
-peer: [REDACTED_JIOWRT_PUBLIC_KEY]
-  allowed ips: 10.200.0.0/24
-  latest handshake: 14 seconds ago`,
-      },
-      {
-        cmd: 'wg show wg_vpn',
-        lang: 'bash',
-        shellTitle: 'JioWrt OpenWrt Shell (Cloudflare WARP)',
-        explanation: 'Displays the state of the separate Cloudflare WARP egress interface.',
-        why: 'Proves that the secondary egress tunnel to 162.159.192.1:2408 is active alongside wg_oracle.',
-        output: `interface: wg_vpn
-  public key: [REDACTED_WARP_CLIENT_KEY]
-peer: [REDACTED_CLOUDFLARE_WARP_KEY]
-  endpoint: 162.159.192.1:2408
-  allowed ips: 0.0.0.0/0, ::/0
-  latest handshake: 4 seconds ago
-  transfer: 1.42 GiB received, 320.15 MiB sent`,
+
+peer: [REDACTED_JIOWRT_KEY]
+  endpoint: [ISP_PUBLIC_CGNAT_IP]:60353
+  allowed ips: 10.200.0.2/32
+  latest handshake: 18 seconds ago
+  transfer: 2.18 MiB received, 1.42 MiB sent`,
       },
     ],
   },
+
+  // 8. Network Diagnostics
   {
-    id: 'firewall-uci',
-    name: 'OpenWrt UCI Firewall Configuration',
-    description: 'Declarative firewall queries and verification commands on JioWrt.',
-    badge: 'OpenWrt UCI',
+    id: 'network-diagnostics',
+    name: 'Network Diagnostics & Connectivity Testing',
+    description: 'End-to-end ping latency, MTU discovery, and DoT SSL client connectivity verification.',
+    badge: 'Diagnostics',
+    targetOs: 'Any Client (Linux / macOS / Windows)',
+    commands: [
+      {
+        cmd: 'ping -c 4 10.200.0.1',
+        lang: 'bash',
+        shellTitle: 'JioWrt OpenWrt Shell',
+        purpose: 'Pings the Oracle VPS internal tunnel address from the JioWrt router.',
+        explanation: 'Verifies bidirectional WireGuard tunnel latency (typically 20-25ms across broadband).',
+        output: `PING 10.200.0.1 (10.200.0.1): 56 data bytes
+64 bytes from 10.200.0.1: seq=0 ttl=64 time=22.141 ms
+64 bytes from 10.200.0.1: seq=1 ttl=64 time=21.890 ms
+64 bytes from 10.200.0.1: seq=2 ttl=64 time=22.312 ms
+64 bytes from 10.200.0.1: seq=3 ttl=64 time=21.954 ms
+--- 10.200.0.1 ping statistics ---
+4 packets transmitted, 4 packets received, 0% packet loss`,
+      },
+      {
+        cmd: 'openssl s_client -connect un1ca.dpdns.org:853 -servername un1ca.dpdns.org -brief',
+        lang: 'bash',
+        shellTitle: 'Client Terminal (Linux / macOS)',
+        purpose: 'Tests the full TLS handshake on port 853 from an external internet connection.',
+        explanation: 'Validates that the certificate chain is accepted and TLS 1.3 is negotiated.',
+        output: `CONNECTION ESTABLISHED
+Protocol version: TLSv1.3
+Ciphersuite: TLS_AES_256_GCM_SHA384
+Peer certificate: CN = un1ca.dpdns.org
+Verification: OK`,
+      },
+    ],
+  },
+
+  // 9. Firewall
+  {
+    id: 'firewall',
+    name: 'iptables NAT & Packet Forwarding Rules',
+    description: 'PREROUTING DNAT, POSTROUTING MASQUERADE, and conntrack stateful inspection on the VPS.',
+    badge: 'iptables Firewall',
+    targetOs: 'Oracle Cloud (Ubuntu 20.04)',
+    commands: [
+      {
+        cmd: 'sudo iptables -t nat -L PREROUTING -n -v --line-numbers',
+        lang: 'bash',
+        shellTitle: 'Oracle Cloud VPS (Ubuntu 20.04)',
+        purpose: 'Inspects the PREROUTING NAT chain to verify packet redirection into the WireGuard tunnel.',
+        explanation: 'Monitors real-time packet counters for DoT (port 853) and AdGuard UI (port 8443).',
+        output: `num   pkts bytes target prot opt in   out   source    destination
+1     1420 89.4K DNAT   tcp  --  eth0 *     0.0.0.0/0 0.0.0.0/0 tcp dpt:853 to:10.200.0.2:853
+2      210 12.8K DNAT   tcp  --  eth0 *     0.0.0.0/0 0.0.0.0/0 tcp dpt:8443 to:10.200.0.2:8443`,
+      },
+      {
+        cmd: `sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 853 -j DNAT --to-destination 10.200.0.2:853
+sudo iptables -t nat -A POSTROUTING -o wg0 -p tcp -d 10.200.0.2 --dport 853 -j MASQUERADE`,
+        lang: 'bash',
+        shellTitle: 'Oracle Cloud VPS (Ubuntu 20.04)',
+        purpose: 'Installs the PREROUTING DNAT and POSTROUTING MASQUERADE rules for DNS-over-TLS (Example configuration).',
+        explanation: 'Directs incoming public port 853 requests through wg0 into JioWrt at 10.200.0.2.',
+        warningOrNotes: 'Example command. Persist with iptables-persistent or netfilter-persistent across reboots.',
+        isExample: true,
+      },
+    ],
+  },
+
+  // 10. Troubleshooting
+  {
+    id: 'troubleshooting',
+    name: 'Troubleshooting & Rapid Recovery',
+    description: 'Probing conntrack state tables, flushing dead sockets, and diagnosing Private DNS errors.',
+    badge: 'Diagnostics',
     targetOs: 'JioWrt (OpenWrt)',
     commands: [
       {
-        cmd: "uci show firewall | grep -E '853|8443'",
+        cmd: "conntrack -L -p tcp --dport 853",
         lang: 'bash',
-        shellTitle: 'JioWrt OpenWrt Shell',
-        explanation: 'Queries UCI configuration system for firewall rules containing ports 853 and 8443.',
-        why: 'Quickly audits active firewall rules to verify syntax and zone bindings.',
-        output: `firewall.@rule[9].name='Allow-AdGuard-DoT'
-firewall.@rule[9].src='wan'
-firewall.@rule[9].dest_port='853'
-firewall.@rule[9].proto='tcp'
-firewall.@rule[9].target='ACCEPT'
-firewall.@redirect[2].name='AdGuard-DoH-8443'
-firewall.@redirect[2].src='wan'
-firewall.@redirect[2].src_dport='8443'
-firewall.@redirect[2].dest='lan'
-firewall.@redirect[2].dest_ip='192.168.1.1'
-firewall.@redirect[2].dest_port='8443'`,
+        shellTitle: 'Oracle Cloud VPS (Ubuntu 20.04)',
+        purpose: 'Dumps the Linux kernel connection tracking table for active Private DNS sessions.',
+        explanation: 'Shows external client IPs, translation states, and NAT session lifetimes.',
+        output: `tcp      6 431998 ESTABLISHED src=49.37.12.184 dst=140.238.244.202 sport=48212 dport=853 src=10.200.0.2 dst=10.200.0.1 sport=853 dport=48212 [ASSURED] mark=0 use=1`,
       },
       {
-        cmd: 'uci show firewall.@rule[9]',
+        cmd: 'logread -f -e AdGuardHome',
         lang: 'bash',
         shellTitle: 'JioWrt OpenWrt Shell',
-        explanation: 'Displays the complete configuration stanza for the DoT accept rule.',
-        why: 'Confirms rule name, protocol, source zone, and target parameters.',
+        purpose: 'Streams real-time live logs from AdGuard Home to monitor incoming DoT queries as they occur.',
+        explanation: 'Immediately detects TLS negotiation failures or handshake terminations.',
+        output: `2026/09/12 00:15:22 [info] 10.200.0.1:48212: processing DoT request "connectivitycheck.gstatic.com." [A]
+2026/09/12 00:15:22 [info] 10.200.0.1:48212: resolved successfully in 1.2ms`,
       },
     ],
   },

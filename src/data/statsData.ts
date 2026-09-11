@@ -1,5 +1,72 @@
 import { QuickStat } from '../types';
 
+export interface HomeLabMetric {
+  value: string;
+  count: number;
+  label: string;
+  sublabel: string;
+  description: string;
+  iconName: string;
+  color: string;
+}
+
+export const homeLabMetrics: HomeLabMetric[] = [
+  {
+    value: '1',
+    count: 1,
+    label: 'Router',
+    sublabel: 'JioWrt / OpenWrt',
+    description: 'Unlocked Jio hardware running OpenWrt with root Linux control and iptables',
+    iconName: 'Cpu',
+    color: 'sky',
+  },
+  {
+    value: '1',
+    count: 1,
+    label: 'VPS',
+    sublabel: 'Oracle Cloud VPS',
+    description: 'Ubuntu 20.04 cloud node (140.238.244.202) acting as public ingress anchor',
+    iconName: 'Server',
+    color: 'indigo',
+  },
+  {
+    value: '1',
+    count: 1,
+    label: 'WireGuard Network',
+    sublabel: '10.200.0.0/24 Subnet',
+    description: 'Encrypted tunnel linking JioWrt (10.200.0.2) to VPS (10.200.0.1) across CGNAT',
+    iconName: 'Network',
+    color: 'emerald',
+  },
+  {
+    value: '1',
+    count: 1,
+    label: 'AdGuard Home',
+    sublabel: 'v0.107.78 Instance',
+    description: 'Central DNS resolver handling port 53 LAN queries, port 853 DoT, and 8443 UI',
+    iconName: 'Shield',
+    color: 'teal',
+  },
+  {
+    value: '1',
+    count: 1,
+    label: 'Custom DNS Hostname',
+    sublabel: 'un1ca.dpdns.org',
+    description: 'Dynamic DNS identity bound to Let\'s Encrypt TLS for Android Private DNS',
+    iconName: 'Globe',
+    color: 'purple',
+  },
+  {
+    value: '1',
+    count: 1,
+    label: 'Cloudflare Website',
+    sublabel: 'un1ca.qzz.io',
+    description: 'Production documentation portal deployed on Cloudflare Pages with edge CDN',
+    iconName: 'Cloud',
+    color: 'amber',
+  },
+];
+
 export const quickStatsData: QuickStat[] = [
   {
     label: 'Standard DNS Resolver',
@@ -58,12 +125,11 @@ export const quickStatsData: QuickStat[] = [
 export const heroMetaStats = {
   hostname: 'un1ca.dpdns.org',
   status: 'Online / Protected',
+  domain: 'un1ca.qzz.io',
   owner: 'Suman Sheikh',
-  vpsPublicIp: '140.238.244.202',
-  jioWrtIp: '192.168.1.1',
-  wanIp: '10.103.50.2',
-  wanGateway: '10.103.50.1',
-  adguardVersion: '0.107.78',
-  vpsWgPublicKey: 'oXU65nSKCfc1TfLuFJYUfTZ2y8onxeHwa+prtkCm51U=',
-  modulusHash: '13dff6ee5978a97789a3e0e713533be1ebe542e03a4f24c8f54a7cb7363799bf',
+  role: 'Home Lab Builder • Linux & Networking Enthusiast',
+  tagline: 'From a Jio Router to a complete self-hosted Home Lab.',
+  uptime: '99.98%',
+  latency: '22ms',
+  blockedToday: '14,892',
 };

@@ -33,21 +33,26 @@ export const DedicationSection: React.FC = () => {
           </div>
           <div>
             <h2 className="text-2xl sm:text-4xl font-extrabold text-white font-mono tracking-tight">
-              Built, configured and documented by <span className="bg-gradient-to-r from-sky-400 via-teal-300 to-indigo-400 bg-clip-text text-transparent">Suman Sheikh</span>
+              Built With Curiosity. Documented With Passion.
             </h2>
             <p className="text-xs sm:text-sm text-sky-400 font-mono mt-1 font-medium">
-              Home Lab Builder / Linux & Networking Enthusiast
+              Built, configured and documented by <strong className="text-white">Suman Sheikh</strong>
             </p>
           </div>
         </div>
 
-        <div className="space-y-3">
-          <p className="text-base sm:text-lg text-sky-200/90 font-mono font-medium max-w-2xl mx-auto leading-relaxed">
-            "From a CGNAT-limited Jio connection to a fully functional Private DNS infrastructure."
+        <div className="space-y-4 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-sky-200/90 font-mono font-medium leading-relaxed">
+            "This Home Lab is a personal learning project built step by step from a Jio Router."
           </p>
-          <p className="text-xs sm:text-sm text-lab-textMuted max-w-2xl mx-auto leading-relaxed font-sans">
-            This Home Lab is a personal learning project focused on networking, Linux, OpenWrt, VPNs, DNS, security, self-hosting and infrastructure. This website documents the complete setup, experiments, commands and configurations behind my JioWrt Home Lab.
-          </p>
+          <div className="text-xs sm:text-sm text-lab-textMuted leading-relaxed font-sans space-y-2">
+            <p>
+              Every configuration, mistake, troubleshooting session and improvement became part of the journey.
+            </p>
+            <p>
+              UN1CA JioWrt is not just a router configuration — it is a record of learning Linux, networking, DNS, VPNs, cloud infrastructure and self-hosting.
+            </p>
+          </div>
         </div>
 
         {/* The Continuous Feedback Loop */}

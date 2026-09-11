@@ -19,14 +19,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenSearch, onOpenDocsIndex })
   }, []);
 
   const navLinks = [
-    { label: 'About Creator', href: '#about' },
+    { label: 'About', href: '#about' },
+    { label: 'Home Lab', href: '#homelab' },
     { label: 'Architecture', href: '#architecture' },
-    { label: 'CGNAT Case Study', href: '#cgnat-case-study' },
-    { label: '14-Day Journey', href: '#journey' },
-    { label: 'Deep Dives', href: '#deep-dives' },
+    { label: 'Projects', href: '#projects' },
+    { label: 'CGNAT Flow', href: '#cgnat-case-study' },
     { label: 'Commands', href: '#commands' },
     { label: 'Troubleshooting', href: '#troubleshooting' },
-    { label: 'Roadmap', href: '#future-plans' },
+    { label: 'Security', href: '#security' },
   ];
 
   return (

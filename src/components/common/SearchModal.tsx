@@ -53,9 +53,12 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
     (t) =>
       !q ||
       t.problem.toLowerCase().includes(q) ||
-      t.symptom.toLowerCase().includes(q) ||
-      t.cause.toLowerCase().includes(q) ||
-      t.solution.toLowerCase().includes(q)
+      (t.diagnosis && t.diagnosis.toLowerCase().includes(q)) ||
+      (t.fix && t.fix.toLowerCase().includes(q)) ||
+      (t.result && t.result.toLowerCase().includes(q)) ||
+      (t.symptom && t.symptom.toLowerCase().includes(q)) ||
+      (t.cause && t.cause.toLowerCase().includes(q)) ||
+      (t.solution && t.solution.toLowerCase().includes(q))
   );
 
   const matchingCommands = commandsLibrary.flatMap((cat) =>

@@ -4,7 +4,11 @@ export interface CommandItem {
   shellTitle?: string;
   output?: string;
   explanation?: string;
+  purpose?: string;
   why?: string;
+  warningOrNotes?: string;
+  isExample?: boolean;
+  targetOs?: string;
 }
 
 export interface TimelineDay {
@@ -45,23 +49,30 @@ export interface LabComponent {
   name: string;
   badge: string;
   role: string;
-  whatItIs: string;
+  whatItDoes: string;
+  whatItIs?: string;
   whyUsed: string;
-  roleInLab: string;
+  howItConnects: string;
+  roleInLab?: string;
+  docLink?: string;
+  category?: 'Core' | 'Security' | 'Cloud' | 'DNS';
   iconName: string;
   specs: { label: string; value: string }[];
-  accentColor: 'cyan' | 'emerald' | 'purple' | 'amber';
+  accentColor: 'cyan' | 'emerald' | 'purple' | 'amber' | 'sky' | 'indigo';
 }
 
 export interface TroubleshootingItem {
   id: string;
   problem: string;
-  category: 'TLS' | 'CGNAT' | 'WireGuard' | 'AdGuard' | 'DNS' | 'Firewall';
-  symptom: string;
-  cause: string;
-  solution: string;
-  commands: CommandItem[];
-  severity: 'high' | 'medium' | 'info';
+  category: 'TLS' | 'CGNAT' | 'WireGuard' | 'AdGuard' | 'DNS' | 'Firewall' | 'Cloudflare';
+  diagnosis: string;
+  fix: string;
+  result: string;
+  symptom?: string;
+  cause?: string;
+  solution?: string;
+  commands?: CommandItem[];
+  severity?: 'high' | 'medium' | 'info';
 }
 
 export interface ArchitectureNode {

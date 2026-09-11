@@ -9,10 +9,11 @@ import {
   Globe,
   Award,
   Terminal,
-  ExternalLink,
   Code2,
-  CheckCircle2,
   Sparkles,
+  Cloud,
+  FileText,
+  ChevronRight,
 } from 'lucide-react';
 
 export const AboutCreatorSection: React.FC = () => {
@@ -55,31 +56,63 @@ export const AboutCreatorSection: React.FC = () => {
     },
   ];
 
-  const milestones = [
+  // Exactly matching the 8 milestones requested
+  const homeLabJourney = [
     {
-      year: 'Phase 1',
-      title: 'Router Unlocking & OpenWrt Migration',
-      desc: 'Replaced restricted ISP stock firmware with OpenWrt on Jio router hardware, establishing root SSH access and network segmentation.',
+      step: '01',
+      title: 'Jio Router',
+      desc: 'Started experimenting with the Jio Router.',
+      icon: Cpu,
+      badge: 'Hardware Exploration',
     },
     {
-      year: 'Phase 2',
-      title: 'Local AdGuard Home v0.107.78 Core',
-      desc: 'Moved dnsmasq to port 5353 and deployed AdGuard Home on port 53, establishing network-wide ad blocking and telemetry defense.',
+      step: '02',
+      title: 'OpenWrt',
+      desc: 'Converted the router into a more flexible Linux-based networking platform.',
+      icon: Terminal,
+      badge: 'Linux Migration',
     },
     {
-      year: 'Phase 3',
-      title: 'Overcoming CGNAT with Oracle VPS',
-      desc: 'Provisioned Ubuntu 20.04 VPS with public IP 140.238.244.202, connected via WireGuard wg_oracle with 25s keepalives, and built the iptables DNAT pipeline.',
+      step: '03',
+      title: 'AdGuard Home',
+      desc: 'Configured network-wide DNS filtering and DNS management.',
+      icon: ShieldCheck,
+      badge: 'DNS Filtering',
     },
     {
-      year: 'Phase 4',
-      title: 'Cryptographic Hardening & Android Private DNS',
-      desc: 'Resolved the TLS key modulus mismatch, verified Let\'s Encrypt certificates with OpenSSL, and activated 24/7 mobile ad-blocking via un1ca.dpdns.org.',
+      step: '04',
+      title: 'Private DNS',
+      desc: 'Configured a custom hostname and secure DNS access.',
+      icon: Globe,
+      badge: 'Secure DoT',
     },
     {
-      year: 'Phase 5',
-      title: 'Dual-Tunnel WireGuard & Cloudflare Egress',
-      desc: 'Separated incoming CGNAT relay (wg_oracle) from outbound browsing privacy (wg_vpn to Cloudflare WARP 162.159.192.1:2408).',
+      step: '05',
+      title: 'WireGuard',
+      desc: 'Built encrypted connectivity between the JioWrt router and VPS.',
+      icon: Radio,
+      badge: 'Tunneling',
+    },
+    {
+      step: '06',
+      title: 'VPS',
+      desc: 'Added a VPS as a public networking endpoint because the ISP connection uses CGNAT.',
+      icon: Server,
+      badge: 'CGNAT Relay',
+    },
+    {
+      step: '07',
+      title: 'Cloudflare',
+      desc: 'Configured Cloudflare services, DNS and website hosting.',
+      icon: Cloud,
+      badge: 'Cloud & Edge',
+    },
+    {
+      step: '08',
+      title: 'Home Lab Documentation',
+      desc: 'Started documenting the complete setup, commands and troubleshooting process.',
+      icon: FileText,
+      badge: 'Open Knowledge',
     },
   ];
 
@@ -96,11 +129,11 @@ export const AboutCreatorSection: React.FC = () => {
             <User className="w-3.5 h-3.5" />
             <span>About the Creator</span>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-white font-mono tracking-tight">
-            Meet the Builder Behind UN1CA JioWrt
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white font-mono tracking-tight">
+            Meet Suman Sheikh
           </h2>
           <p className="text-sm sm:text-base text-lab-textMuted leading-relaxed">
-            The personal engineering story, hands-on homelab journey, and technical milestones of Suman Sheikh.
+            The hands-on builder, networking enthusiast, and developer behind the UN1CA JioWrt Home Lab.
           </p>
         </div>
 
@@ -113,7 +146,7 @@ export const AboutCreatorSection: React.FC = () => {
                 {/* Glow ring */}
                 <div className="absolute -inset-1 rounded-3xl bg-gradient-to-r from-sky-400 via-teal-400 to-indigo-500 opacity-30 blur-lg group-hover:opacity-60 transition duration-500" />
 
-                {/* Profile Image container */}
+                {/* Profile Image container with authentic photo */}
                 <div className="relative w-48 h-56 sm:w-56 sm:h-64 rounded-2xl overflow-hidden border-2 border-sky-400/50 bg-black/60 shadow-2xl">
                   <img
                     src="/profile.png"
@@ -135,7 +168,7 @@ export const AboutCreatorSection: React.FC = () => {
                   Suman Sheikh
                 </h3>
                 <p className="text-xs sm:text-sm text-sky-400 font-mono font-medium">
-                  Home Lab Builder / Linux & Networking Enthusiast
+                  Home Lab Builder • Linux & Networking Enthusiast
                 </p>
                 <p className="text-[11px] text-lab-textDim font-mono">
                   Project: UN1CA JioWrt Home Lab
@@ -145,26 +178,20 @@ export const AboutCreatorSection: React.FC = () => {
 
             {/* Introduction & Bio Column */}
             <div className="lg:col-span-8 space-y-6">
-              {/* Introduction Quote Box */}
-              <div className="p-5 sm:p-6 rounded-2xl bg-sky-950/20 border border-sky-500/30 text-xs sm:text-sm text-sky-100/90 leading-relaxed font-sans relative">
-                <span className="text-sky-400 font-serif text-3xl absolute top-3 left-4 select-none opacity-50">“</span>
-                <p className="pl-6 pt-1 font-mono text-xs sm:text-sm text-sky-200 leading-relaxed">
-                  I’m Suman Sheikh, the creator of UN1CA JioWrt Home Lab. This project documents my journey of building, configuring and experimenting with OpenWrt, AdGuard Home, WireGuard, VPS, DNS, Cloudflare and self-hosted infrastructure.
-                </p>
-              </div>
-
-              {/* Extended Philosophy Description */}
-              <div className="space-y-3 text-xs sm:text-sm text-lab-textMuted leading-relaxed font-sans">
-                <p>
-                  Like many home lab builders, I started with consumer-grade hardware locked down by ISP firmware and trapped behind <strong className="text-white font-mono">Carrier-Grade NAT (CGNAT)</strong>. Rather than settling for limited defaults, I turned this constraint into an in-depth learning journey across the entire modern networking and Linux stack.
-                </p>
-                <p>
-                  From compiling and flashing OpenWrt firmware to configuring reverse WireGuard tunnels on an Oracle Cloud VPS, mathematically verifying RSA/ECDSA key modulus parity with OpenSSL, and implementing native Android Private DNS across cellular networks — every single line of configuration on this website was built, tested, and verified in real-world conditions.
+              {/* Introduction Quote Box (Direct user-requested text) */}
+              <div className="p-5 sm:p-6 rounded-2xl bg-sky-950/30 border border-sky-500/40 text-xs sm:text-sm text-sky-100/95 leading-relaxed font-sans relative shadow-lg">
+                <span className="text-sky-400 font-serif text-4xl absolute top-2 left-3 select-none opacity-40">“</span>
+                <p className="pl-6 pt-1 font-mono text-xs sm:text-sm text-sky-200 leading-relaxed font-medium">
+                  I'm Suman Sheikh, the creator of UN1CA JioWrt Home Lab.
+                  <br /><br />
+                  This project started with a Jio Router and gradually evolved into a powerful self-hosted networking environment. I experimented with OpenWrt, AdGuard Home, WireGuard, VPS infrastructure, Private DNS, Cloudflare and secure remote access.
+                  <br /><br />
+                  This website documents that journey — including the architecture, configuration, troubleshooting and commands used along the way.
                 </p>
               </div>
 
               {/* Quick Spec Tags */}
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2 text-xs font-mono">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1 text-xs font-mono">
                 <div className="bg-black/50 p-2.5 rounded-xl border border-lab-borderSubtle">
                   <span className="text-lab-textDim text-[10px] block uppercase">Core Gateway</span>
                   <span className="text-white font-bold">JioWrt / OpenWrt</span>
@@ -186,41 +213,56 @@ export const AboutCreatorSection: React.FC = () => {
           </div>
         </div>
 
-        {/* My Home Lab Journey (Phase Milestones) */}
-        <div id="creator-journey" className="space-y-6">
+        {/* Section 4: My Home Lab Journey (8 Timeline Steps) */}
+        <div id="journey" className="space-y-6 pt-6">
           <div className="space-y-2">
-            <div className="text-xs font-mono uppercase tracking-wider text-sky-400 font-bold flex items-center gap-2">
+            <div className="text-xs font-mono uppercase tracking-wider text-amber-400 font-bold flex items-center gap-2">
               <Terminal className="w-4 h-4" />
-              <span>My Home Lab Journey & Project Evolution</span>
+              <span>My Home Lab Journey</span>
             </div>
             <h3 className="text-xl sm:text-3xl font-bold text-white font-mono">
-              From Stock Firmware to Autonomous DNS Infrastructure
+              From Jio Router to Autonomous Self-Hosted Infrastructure
             </h3>
-            <p className="text-xs sm:text-sm text-lab-textMuted max-w-2xl">
-              The progressive engineering phases tackled while designing and building the UN1CA JioWrt infrastructure.
+            <p className="text-xs sm:text-sm text-lab-textMuted max-w-2xl font-sans">
+              The 8 milestone phases of experimenting, building, and refining the UN1CA JioWrt Home Lab.
             </p>
           </div>
 
-          {/* Timeline Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {milestones.map((m, idx) => (
-              <div
-                key={idx}
-                className="glass-panel p-5 rounded-2xl border border-lab-border flex flex-col justify-between space-y-3 hover:border-sky-500/40 transition-all"
-              >
-                <div className="space-y-2">
-                  <span className="text-[10px] font-mono px-2.5 py-0.5 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/20 font-bold uppercase">
-                    {m.year}
-                  </span>
-                  <h4 className="text-sm sm:text-base font-bold text-white font-mono leading-snug">
-                    {m.title}
-                  </h4>
-                  <p className="text-xs text-lab-textMuted leading-relaxed">
-                    {m.desc}
-                  </p>
+          {/* 8 Timeline Cards Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {homeLabJourney.map((item, idx) => {
+              const IconComponent = item.icon;
+              return (
+                <div
+                  key={idx}
+                  className="glass-panel p-5 rounded-2xl border border-lab-border flex flex-col justify-between space-y-3 hover:border-amber-500/40 hover:-translate-y-1 transition-all group"
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-extrabold font-mono text-amber-400 bg-amber-500/10 border border-amber-500/20 px-2.5 py-0.5 rounded-lg">
+                        {item.step}
+                      </span>
+                      <div className="w-8 h-8 rounded-lg bg-lab-surfaceElevated border border-lab-border flex items-center justify-center text-lab-textMuted group-hover:text-amber-400 transition-colors">
+                        <IconComponent className="w-4 h-4" />
+                      </div>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] font-mono text-lab-textDim uppercase tracking-wider block">
+                        {item.badge}
+                      </span>
+                      <h4 className="text-base font-bold text-white font-mono mt-0.5">
+                        {item.title}
+                      </h4>
+                    </div>
+
+                    <p className="text-xs text-lab-textMuted leading-relaxed font-sans">
+                      {item.desc}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
@@ -253,7 +295,7 @@ export const AboutCreatorSection: React.FC = () => {
                         {skill.name}
                       </h4>
                     </div>
-                    <p className="text-xs text-lab-textMuted leading-relaxed">
+                    <p className="text-xs text-lab-textMuted leading-relaxed font-sans">
                       {skill.desc}
                     </p>
                   </div>
@@ -264,18 +306,18 @@ export const AboutCreatorSection: React.FC = () => {
         </div>
 
         {/* Project Dedication Highlight Box */}
-        <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-amber-500/30 bg-gradient-to-r from-amber-950/20 via-black/40 to-black/60 shadow-xl space-y-4">
-          <div className="flex items-center gap-2 text-amber-400 font-mono text-xs font-bold uppercase tracking-wider">
+        <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-sky-500/30 bg-gradient-to-r from-sky-950/20 via-black/40 to-black/60 shadow-xl space-y-4">
+          <div className="flex items-center gap-2 text-sky-400 font-mono text-xs font-bold uppercase tracking-wider">
             <Award className="w-4 h-4" />
             <span>Project Dedication</span>
           </div>
           <h4 className="text-lg sm:text-xl font-bold text-white font-mono">
             Documenting Every Real-World Command, Failure, and Fix
           </h4>
-          <p className="text-xs sm:text-sm text-lab-textMuted leading-relaxed">
+          <p className="text-xs sm:text-sm text-lab-textMuted leading-relaxed font-sans">
             This website is dedicated to recording the complete technical setup behind my JioWrt Home Lab. Rather than presenting a sanitized tutorial where everything works immediately, it documents the authentic process: discovering key pair mismatches, debugging kernel IP forwarding, formulating iptables rules, and proving cryptographic validity.
           </p>
-          <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-mono text-amber-300">
+          <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-mono text-sky-300">
             <span>• OpenWrt Gateway</span>
             <span>• Oracle Cloud VPS</span>
             <span>• WireGuard Mesh</span>

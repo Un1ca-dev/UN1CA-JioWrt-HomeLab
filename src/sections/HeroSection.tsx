@@ -12,6 +12,8 @@ import {
   Network,
   Compass,
   User,
+  Sparkles,
+  Terminal,
 } from 'lucide-react';
 import { heroMetaStats } from '../data/statsData';
 
@@ -78,12 +80,16 @@ export const HeroSection: React.FC = () => {
           </div>
 
           {/* Main Title */}
-          <div className="space-y-2">
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-mono bg-sky-500/10 text-sky-300 border border-sky-500/20">
+              <Sparkles className="w-3.5 h-3.5 text-sky-400" />
+              <span>Advanced Jio Router Home Lab</span>
+            </div>
             <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight text-white font-mono">
-              UN1CA <span className="bg-gradient-to-r from-sky-400 via-teal-300 to-indigo-400 bg-clip-text text-transparent">JioWrt</span> Home Lab
+              UN1CA <span className="bg-gradient-to-r from-sky-400 via-teal-300 to-indigo-400 bg-clip-text text-transparent">JioWrt</span>
             </h1>
             <p className="text-base sm:text-xl font-mono text-sky-200/90 font-medium tracking-wide">
-              "Building a secure, private and self-hosted network behind CGNAT."
+              "From a Jio Router to a complete self-hosted Home Lab."
             </p>
           </div>
 
@@ -95,35 +101,35 @@ export const HeroSection: React.FC = () => {
           {/* Action Buttons */}
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <a
-              href="#about"
+              href="#homelab"
               className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-mono text-xs sm:text-sm font-bold shadow-lg shadow-sky-500/25 transition-all hover:-translate-y-0.5"
             >
-              <User className="w-4 h-4 text-slate-950" />
-              <span>About Creator</span>
-            </a>
-
-            <a
-              href="#cgnat-case-study"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-mono text-xs sm:text-sm font-bold shadow-lg shadow-amber-500/25 transition-all hover:-translate-y-0.5"
-            >
               <Compass className="w-4 h-4 text-slate-950" />
-              <span>CGNAT Solution Case Study</span>
-            </a>
-
-            <a
-              href="#architecture"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-lab-surfaceElevated hover:bg-lab-surfaceHover border border-lab-border text-white font-mono text-xs sm:text-sm font-medium transition-all hover:border-sky-500/40"
-            >
-              <Network className="w-4 h-4 text-sky-400" />
-              <span>Architecture</span>
+              <span>Explore Home Lab</span>
             </a>
 
             <a
               href="#journey"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-mono text-xs sm:text-sm font-bold shadow-lg shadow-amber-500/25 transition-all hover:-translate-y-0.5"
+            >
+              <BookOpen className="w-4 h-4 text-slate-950" />
+              <span>View Setup Journey</span>
+            </a>
+
+            <a
+              href="#commands"
               className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-lab-surfaceElevated hover:bg-lab-surfaceHover border border-lab-border text-white font-mono text-xs sm:text-sm font-medium transition-all hover:border-sky-500/40"
             >
-              <BookOpen className="w-4 h-4 text-purple-400" />
-              <span>14-Day Build Journey</span>
+              <Terminal className="w-4 h-4 text-sky-400" />
+              <span>Documentation</span>
+            </a>
+
+            <a
+              href="#architecture"
+              className="inline-flex items-center gap-2 px-4 py-3 rounded-xl bg-lab-surfaceElevated hover:bg-lab-surfaceHover border border-lab-border text-white font-mono text-xs sm:text-sm font-medium transition-all hover:border-sky-500/40"
+            >
+              <Network className="w-4 h-4 text-purple-400" />
+              <span>Architecture</span>
             </a>
 
             <a
